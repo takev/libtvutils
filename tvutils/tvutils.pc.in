@@ -1,0 +1,12 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: whakauwhi
+Description: Host services
+Requires:
+Version: @VERSION@
+Libs: -L${libdir} -ltvutils
+Cflags: -I${includedir}/tvutils-@VERSION@
+
