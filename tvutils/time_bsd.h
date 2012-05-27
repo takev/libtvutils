@@ -17,7 +17,11 @@
 #ifndef TVU_TIME_BSD_H
 #define TVU_TIME_BSD_H
 
-#include <time.h>
+#ifndef TVU_TIME_H_IN
+#error "Do not manually include this file, it should be included only from tvutils/time.h"
+#endif
+
+#include <sys/time.h>
 
 /** Get the time.
  * The time returned by this function is a fixed point number.

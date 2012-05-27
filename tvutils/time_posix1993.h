@@ -17,6 +17,13 @@
 #ifndef TVU_TIME_POSIX1993_H
 #define TVU_TIME_POSIX1993_H
 
+#ifndef TVU_TIME_H_IN
+#error "Do not manually include this file, it should be included only from tvutils/time.h"
+#endif
+
+#if _POSIX_C_SOURCE < 199309L
+#define _POSIX_C_SOURCE 199309L
+#endif
 #include <time.h>
 
 /** Get the time.

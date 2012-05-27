@@ -25,7 +25,8 @@ m4/ltsugar.m4
 m4/ltversion.m4
 m4/lt~obsolete.m4
 tvutils/tvutils.pc
-pyext/uniqueid.py
-pyext/uniqueid_wrap.c
+tvutils/integer_model.h
+pyext/tvutils.py
+pyext/tvutils_wrap.c
 
 

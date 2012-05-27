@@ -1,5 +1,5 @@
 
-AM_CFLAGS = -Wall -W -Werror -pedantic -Wno-sign-compare -Wno-long-long -Wno-unused -std=gnu99
+AM_CFLAGS = -fstrict-aliasing -O3 -Wall -W -Werror -Wstrict-aliasing=2 -pedantic -Wno-sign-compare -Wno-long-long -Wno-unused -std=gnu99
 
 #dist_man3_MANS = uniq_init.3 uniq_time.3 uniq_tipc_node.3 uniq_tipc_cuid.3
 
@@ -12,8 +12,21 @@ libtvutils_la_SOURCES = tvutils.c
 libtvutils_la_LIBADD = $(LIBS)
 
 library_includedir=$(includedir)/uniqueid-$(VERSION)/uniqueid
-library_include_HEADERS = atomic.h time.h
+library_include_HEADERS =\
+	 tvutils.h\
+	 atomic.h\
+	 atomic_gcc.h\
+	 time.h\
+	 time_bsd.h\
+	 time_posix1993.h\
+	 endian.h\
+	 integer.h\
+	 integer_model.h\
+	 memory_access.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = tvutils.pc
+
+memory_acces.h: memory_access.h.php
+	php $< >$@
 

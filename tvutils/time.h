@@ -16,8 +16,9 @@
  */
 #ifndef TVU_TIME_H
 #define TVU_TIME_H
+#define TVU_TIME_H_IN
 
-#include <time.h>
+#include <stdlib.h>
 #include <stdint.h>
 
 // 2012-01-01 with reference 1970-01-01 in seconds.
@@ -27,12 +28,15 @@
 
 typedef int64_t tvu_time_t;
 
-#if _POSIX_C_SOURCE >= 199309L
+#if __GNUC_LIBRARY__ >= 6
 #include <tvutils/time_posix1993.h>
-#endif
 
-#if _BSD_SOURCE >= 199309L
+#elif defined(__APPLE__)
 #include <tvutils/time_bsd.h>
+
+#else
+#error "Could not find a time implemtation for this platfor."
 #endif
 
+#undef TVU_TIME_H_IN
 #endif

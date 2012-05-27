@@ -32,6 +32,7 @@ DX_PS_FEATURE(OFF)
 DX_INIT_DOXYGEN(tvutils, doxygen.cfg)
 
 
+
 AX_PKG_SWIG(1.3.17, [], [ AC_MSG_ERROR([SWIG is required to build..]) ])
 AX_SWIG_PYTHON
 
@@ -42,10 +43,22 @@ AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 
 AC_C_BIGENDIAN
-
+AX_CHECK_ALIGNED_ACCESS_REQUIRED
 AC_CHECK_LIB(rt,clock_gettime)
 
+AS_IF(
+    [test "x$ax_cv_have_aligned_access_required" = "xyes"],
+    AC_SUBST([TVU_ALIGNED_ACCESS], [1]),
+    AC_SUBST([TVU_ALIGNED_ACCESS], [0])
+)
+AS_IF(
+    [test "x$ac_cv_c_bigendian" = "xyes"],
+    AC_SUBST([TVU_BIG_ENDIAN], [1]),
+    AC_SUBST([TVU_BIG_ENDIAN], [0])
+)
+
 AC_CONFIG_HEADERS([tvutils/config.h])
-AC_CONFIG_FILES([Makefile tvutils/Makefile tvutils/tvutils.pc pyext/Makefile])
+AC_CONFIG_FILES([Makefile tvutils/Makefile tvutils/tvutils.pc tvutils/integer_model.h pyext/Makefile])
 AC_OUTPUT
+
 
