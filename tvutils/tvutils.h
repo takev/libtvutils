@@ -1,6 +1,7 @@
 #ifndef TVU_UTILS_H
 #define TVU_UTILS_H
 
+#include <tvutils/stdfloat.h>
 #include <tvutils/time.h>
 #include <tvutils/atomic.h>
 #include <tvutils/integer.h>

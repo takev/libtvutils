@@ -5,32 +5,6 @@
 
 #include <stdint.h>
 
-typedef union {
-    char        c[1];
-    uint8_t     u;
-    int8_t      i;
-} tvu_conv_8_t;
-
-typedef union {
-    char        c[2];
-    uint16_t    u;
-    int16_t     i;
-} tvu_conv_16_t;
-
-typedef union {
-    char        c[4];
-    uint32_t    u;
-    int32_t     i;
-    float       f;
-} tvu_conv_32_t;
-
-typedef union {
-    char        c[8];
-    uint64_t    u;
-    int64_t     i;
-    double      f;
-} tvu_conv_64_t;
-
 /** Sign extend a integer.
  * The integer of 'b' bits is stored in x. A signed integer is returned.
  * @param x     The integer to sign extend.
