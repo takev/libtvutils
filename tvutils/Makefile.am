@@ -11,9 +11,14 @@ libtvutils_la_LDFLAGS = -version-info $(SHARED_VERSION_INFO)
 libtvutils_la_SOURCES = tvutils.c
 libtvutils_la_LIBADD = $(LIBS)
 
+BUILT_SOURCES=\
+	memory_access.h\
+	endian.h
+
 library_includedir=$(includedir)/uniqueid-$(VERSION)/uniqueid
 library_include_HEADERS =\
 	 tvutils.h\
+	 target.h\
 	 atomic.h\
 	 atomic_gcc.h\
 	 time.h\
@@ -21,12 +26,14 @@ library_include_HEADERS =\
 	 time_posix1993.h\
 	 endian.h\
 	 integer.h\
-	 integer_model.h\
 	 memory_access.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = tvutils.pc
 
-memory_acces.h: memory_access.h.php
+memory_access.h: memory_access.h.php
+	php $< >$@
+
+endian.h: endian.h.php
 	php $< >$@
 

@@ -32,7 +32,7 @@ static inline <?=$_sign?>int<?=$bit_size?>_t tvu_get_<?=$endian?>_<?=$sign?><?=$
     <? } ?>
     return tvu_<?=$endian?>toh_<?=$sign?><?=$bit_size?>(conv.<?=$sign?>);
 #else
-    tvu_conv_<?=bit_size?>_t *conv = (tvu_conv_<?=$bit_size?>_t *)buffer;
+    tvu_conv_<?=$bit_size?>_t *conv = (tvu_conv_<?=$bit_size?>_t *)buffer;
     return tvu_<?=$endian?>toh_<?=$sign?><?=$bit_size?>(conv-><?=$sign?>);
 #endif
 }

@@ -58,7 +58,7 @@ AS_IF(
 )
 
 AC_CONFIG_HEADERS([tvutils/config.h])
-AC_CONFIG_FILES([Makefile tvutils/Makefile tvutils/tvutils.pc tvutils/integer_model.h pyext/Makefile])
+AC_CONFIG_FILES([Makefile tvutils/Makefile tvutils/tvutils.pc tvutils/target.h pyext/Makefile])
 AC_OUTPUT
 
 
