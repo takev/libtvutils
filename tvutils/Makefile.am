@@ -11,6 +11,10 @@ libtvutils_la_LDFLAGS = -version-info $(SHARED_VERSION_INFO)
 libtvutils_la_SOURCES = tvutils.c
 libtvutils_la_LIBADD = $(LIBS)
 
+EXTRA_DIST=\
+	memory_access.h.php\
+	endian.h.php
+
 BUILT_SOURCES=\
 	memory_access.h\
 	endian.h
@@ -30,6 +34,10 @@ library_include_HEADERS =\
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = tvutils.pc
+
+CLEANFILES=\
+	endian.h\
+	memory_acces.h
 
 memory_access.h: memory_access.h.php
 	php $< >$@
