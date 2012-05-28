@@ -13,16 +13,19 @@ libtvutils_la_LIBADD = $(LIBS)
 
 EXTRA_DIST=\
 	memory_access.h.php\
-	endian.h.php
+	endian.h.php\
+	atomic_gcc.h.php
 
 BUILT_SOURCES=\
 	memory_access.h\
-	endian.h
+	endian.h\
+	atomic_gcc.h
 
 library_includedir=$(includedir)/uniqueid-$(VERSION)/uniqueid
 library_include_HEADERS =\
 	 tvutils.h\
 	 target.h\
+	 stdfloat.h\
 	 atomic.h\
 	 atomic_gcc.h\
 	 time.h\
@@ -37,11 +40,15 @@ pkgconfig_DATA = tvutils.pc
 
 CLEANFILES=\
 	endian.h\
-	memory_acces.h
+	memory_acces.h\
+	atomic_gcc.h
 
 memory_access.h: memory_access.h.php
-	php $< >$@
+	${PHP} $< >$@
 
 endian.h: endian.h.php
-	php $< >$@
+	${PHP} $< >$@
+
+atomic_gcc.h: atomic_gcc.h.php
+	${PHP} $< >$@
 

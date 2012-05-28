@@ -1,4 +1,4 @@
-/* libuniqueid - Library for distributed generating unique idententifiers
+/* libtvutils - Library of utilities.
  * Copyright (C) 2012  Take Vos <take.vos@vosgames.nl>
  * 
  * This program is free software; you can redistribute it and/or modify

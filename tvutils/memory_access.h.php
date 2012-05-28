@@ -1,3 +1,19 @@
+/* libtvutils - Library of utilities.
+ * Copyright (C) 2012  Take Vos <take.vos@vosgames.nl>
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; of version 2 of the License.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 #ifndef TVU_MEMORY_ACCESS_H
 #define TVU_MEMORY_ACCESS_H
 
@@ -95,12 +111,12 @@ foreach ($bit_sizes as $bit_size) {
     foreach ($endians as $endian) {
         $__endian = $endian == "be" ? "big endian" : "little endian";
 ?>
-/** Get an <?=$__endian?> <?=$__sign?> float from a byte buffer.
+/** Get an <?=$__endian?> float from a byte buffer.
  * This function does the correct thing in respect to strict aliasing and unaligned
  * memory access on computer which can not handle this.
  *
- * @param buffer    The memory location where the <?=$__endian?> <?=$__sign?> float is located.
- * @returns         An host native <?=$bit_size?>-bit <?=$__sign?> float.
+ * @param buffer    The memory location where the <?=$__endian?> float is located.
+ * @returns         An host native <?=$bit_size?>-bit float.
  */
 static inline float<?=$bit_size?>_t tvu_get_<?=$endian?>_f<?=$bit_size?>(uint8_t * restrict buffer)
 {
@@ -119,12 +135,12 @@ static inline float<?=$bit_size?>_t tvu_get_<?=$endian?>_f<?=$bit_size?>(uint8_t
     return conv.f;
 }
 
-/** Set an <?=$__endian?> <?=$__sign?> float into a byte buffer.
+/** Set an <?=$__endian?> float into a byte buffer.
  * This function does the correct thing in respect to strict aliasing and unaligned
  * memory access on computer which can not handle this.
  *
- * @param buffer    The memory location where the <?=$__endian?> <?=$__sign?> float should be stored;
- * @returns         An host native <?=$bit_size?>-bit <?=$__sign?> float.
+ * @param buffer    The memory location where the <?=$__endian?> float should be stored;
+ * @param x         An host native <?=$bit_size?>-bit float.
  */
 static inline void tvu_set_<?=$endian?>_f<?=$bit_size?>(uint8_t * restrict buffer, float<?=$bit_size?>_t x)
 {

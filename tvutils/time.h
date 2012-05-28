@@ -1,4 +1,4 @@
-/* libtvutils - Library with useful utilities.
+/* libtvutils - Library of utilities.
  * Copyright (C) 2012  Take Vos <take.vos@vosgames.nl>
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -26,6 +26,11 @@
 #define TVU_NS_TO_FRAC     18446744074ULL
 #define TVU_US_TO_FRAC     18446744073710ULL
 
+/** The time.
+ * A 64 bit number as the number of 1/(2^32) seconds since January 1st, 2012.
+ * You can also see this as a 32.32 fixed point number, representing the
+ * number of seconds since January 1st, 2012.
+ */
 typedef int64_t tvu_time_t;
 
 #if __GNUC_LIBRARY__ >= 6
