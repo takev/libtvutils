@@ -1,5 +1,5 @@
-#ifndef TVU_INTEGER_MODEL_H
-#define TVU_INTEGER_MODEL_H
+#ifndef TVU_TARGET_H
+#define TVU_TARGET_H
 
 #if @TVU_BIG_ENDIAN@
 #define TVU_BIG_ENDIAN

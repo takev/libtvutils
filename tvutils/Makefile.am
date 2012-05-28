@@ -21,7 +21,7 @@ BUILT_SOURCES=\
 	endian.h\
 	atomic_gcc.h
 
-library_includedir=$(includedir)/uniqueid-$(VERSION)/uniqueid
+library_includedir=$(includedir)/tvutils-$(VERSION)/tvutils
 library_include_HEADERS =\
 	 tvutils.h\
 	 target.h\
