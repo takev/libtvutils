@@ -75,6 +75,6 @@ static inline <?=$_sign?>int<?=$bit_size?>_t tvu_hto<?=$endian?>_<?=$sign?><?=$b
 #endif
 }
 
-<? }}} ?>
+<?php }}} ?>
 
 #endif

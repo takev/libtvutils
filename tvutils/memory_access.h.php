@@ -71,9 +71,9 @@ static inline <?=$_sign?>int<?=$bit_size?>_t tvu_get_<?=$endian?>_<?=$sign?><?=$
 {
 #ifdef TVU_ALIGNED_ACCESS
     union<?=$bit_size?>_t conv;
-    <? for ($byte_nr = 0; $byte_nr < $nr_bytes; $byte_nr++) { ?>
+    <?php for ($byte_nr = 0; $byte_nr < $nr_bytes; $byte_nr++) { ?>
     conv.c[<?=$byte_nr?>] = buffer[<?=$byte_nr?>];
-    <? } ?>
+    <?php } ?>
     return tvu_<?=$endian?>toh_<?=$sign?><?=$bit_size?>(conv.<?=$sign?>);
 #else
     union<?=$bit_size?>_t *conv = (union<?=$bit_size?>_t *)buffer;
@@ -92,9 +92,9 @@ static inline void tvu_set_<?=$endian?>_<?=$sign?><?=$bit_size?>(uint8_t * restr
 {
 #ifdef TVU_ALIGNED_ACCESS
     union<?=$bit_size?>_t conv = {.<?=$sign?> = tvu_hto<?=$endian?>_<?=$sign?><?=$bit_size?>(x)};
-    <? for ($byte_nr = 0; $byte_nr < $nr_bytes; $byte_nr++) { ?>
+    <?php for ($byte_nr = 0; $byte_nr < $nr_bytes; $byte_nr++) { ?>
     buffer[<?=$byte_nr?>] = conv.c[<?=$byte_nr?>];
-    <? } ?>
+    <?php } ?>
 #else
     union<?=$bit_size?>_t *conv = (union<?=$bit_size?>_t *)buffer;
     conv-><?=$sign?> = tvu_hto<?=$endian?>_<?=$sign?><?=$bit_size?>(x);
