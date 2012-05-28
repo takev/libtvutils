@@ -33,7 +33,7 @@
  */
 typedef int64_t tvu_time_t;
 
-#if __GNUC_LIBRARY__ >= 6
+#if __GLIBC__ >= 2
 #include <tvutils/time_posix1993.h>
 
 #elif defined(__APPLE__)

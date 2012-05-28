@@ -17,8 +17,16 @@
 #ifndef TVU_ENDIAN_BSD_H
 #define TVU_ENDIAN_BSD_H
 
-#if __GNUC_LIBRARY__ >= 6
-#error "Could not find an endian implementation for glibc platform."
+#if __GLIBC__ >= 2
+#include <byteswap.h>
+#define tvu_swap_i8(x)  (x)
+#define tvu_swap_i16(x) bswap_16(x)
+#define tvu_swap_i32(x) bswap_32(x)
+#define tvu_swap_i64(x) bswap_64(x)
+#define tvu_swap_u8(x)  (x)
+#define tvu_swap_u16(x) bswap_16(x)
+#define tvu_swap_u32(x) bswap_32(x)
+#define tvu_swap_u64(x) bswap_64(x)
 
 #elif defined(__APPLE__)
 #include <stdint.h>
