@@ -3,8 +3,8 @@ exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 
-Name: whakauwhi
-Description: Host services
+Name: Take Vos's library of useful utilities
+Description: Lots of utilities
 Requires:
 Version: @VERSION@
 Libs: -L${libdir} -ltvutils

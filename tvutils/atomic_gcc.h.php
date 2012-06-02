@@ -24,6 +24,20 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+/** All reads before this barrier can not cross after this barrier.
+ */
+static inline void tvu_atomic_read_barrier(void)
+{
+    __sync_synchronize();
+}
+
+/** All writes before this barrier can not cross after this barrier.
+ */
+static inline void tvu_atomic_write_barrier(void)
+{
+    __sync_synchronize();
+}
+
 <?php
 $bit_sizes = array(8, 16, 32, 64);
 $signs = array("i", "u");

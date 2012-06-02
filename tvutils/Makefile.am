@@ -14,17 +14,21 @@ libtvutils_la_LIBADD = $(LIBS)
 EXTRA_DIST=\
 	memory_access.h.php\
 	endian.h.php\
-	atomic_gcc.h.php
+	atomic_gcc.h.php\
+	number.h.php
 
 BUILT_SOURCES=\
 	memory_access.h\
 	endian.h\
-	atomic_gcc.h
+	atomic_gcc.h\
+	number.h
 
 library_includedir=$(includedir)/tvutils-$(VERSION)/tvutils
 library_include_HEADERS =\
 	 tvutils.h\
+	 buffer.h\
 	 target.h\
+	 compiler.h\
 	 stdfloat.h\
 	 atomic.h\
 	 atomic_gcc.h\
@@ -32,8 +36,9 @@ library_include_HEADERS =\
 	 time_bsd.h\
 	 time_posix1993.h\
 	 endian.h\
-	 integer.h\
-	 memory_access.h
+	 number.h\
+	 memory_access.h\
+	 ringbuffer.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = tvutils.pc
@@ -41,7 +46,8 @@ pkgconfig_DATA = tvutils.pc
 CLEANFILES=\
 	endian.h\
 	memory_acces.h\
-	atomic_gcc.h
+	atomic_gcc.h\
+	number.h
 
 memory_access.h: memory_access.h.php
 	${PHP} $< >$@
@@ -50,5 +56,8 @@ endian.h: endian.h.php
 	${PHP} $< >$@
 
 atomic_gcc.h: atomic_gcc.h.php
+	${PHP} $< >$@
+
+number.h: number.h.php
 	${PHP} $< >$@
 
