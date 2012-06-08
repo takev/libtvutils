@@ -22,7 +22,7 @@
  * @param needle    The character to find in the string.
  * @returns         The number of needles found.
  */
-static inline unsigned int tvu_count_character(char *haystack, char needle)
+static inline unsigned int tvu_count_character(char const * restrict haystack, char needle)
 {
     unsigned int    count = 0;
     char            c;

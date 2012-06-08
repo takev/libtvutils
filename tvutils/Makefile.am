@@ -37,6 +37,7 @@ library_include_HEADERS =\
 	 time_posix1993.h\
 	 endian.h\
 	 number.h\
+	 string.h\
 	 memory_access.h\
 	 ringbuffer.h
 

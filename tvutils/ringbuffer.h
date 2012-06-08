@@ -163,6 +163,7 @@ static inline size_t tvu_ring_hdrsize(void)
  * @param self  A pointer to an unitialized ring buffer.
  * @param size  The size of memory allocated for the ring buffer;
  *              not the size of the ring buffer itself.
+ * @return      0 if ok, -1 on error.
  */
 static inline int tvu_ring_init(tvu_ringbuffer_t *self, size_t size)
 {
@@ -174,6 +175,7 @@ static inline int tvu_ring_init(tvu_ringbuffer_t *self, size_t size)
     self->tail = 0;
     self->free = 0;
     self->size = tvu_round_down_u64(size - tvu_ring_hdrsize(), tvu_ringpacket_hdrsize());
+    return 0;
 }
 
 /** Advance the free pointer.
