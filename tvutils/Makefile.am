@@ -59,8 +59,7 @@ CLEANFILES=\
 	endian.h\
 	memory_acces.h\
 	atomic_gcc.h\
-	number.h\
-	string.h
+	number.h
 
 memory_access.h: memory_access.h.php
 	${PHP} $< >$@
