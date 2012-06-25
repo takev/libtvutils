@@ -59,6 +59,7 @@
 
 #include <tvutils/target.h>
 #include <tvutils/compiler.h>
+#include <tvutils/macros.h>
 #include <tvutils/stdfloat.h>
 #include <tvutils/buffer.h>
 #include <tvutils/time.h>
@@ -68,6 +69,7 @@
 #include <tvutils/endian.h>
 #include <tvutils/memory_access.h>
 #include <tvutils/ringbuffer.h>
+#include <tvutils/unit_test.h>
 
 int tvu_init(void);
 

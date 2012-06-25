@@ -14,25 +14,23 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-#ifndef TVU_STRING_H
-#define TVU_STRING_H
+#ifndef TVU_BUFFER_H
+#define TVU_BUFFER_H
 
-/** Count how many times a character is in a string.
- * @param haystack  The string to find character is.
- * @param needle    The character to find in the string.
- * @returns         The number of needles found.
- */
-static inline unsigned int tvu_count_character(char const * restrict haystack, char needle)
+#include <stdint.h>
+
+typedef uint8_t utf8_t;
+
+static inline size_t tvu_count_characters(utf8_t *haystack, utf8_t needle)
 {
-    unsigned int    count = 0;
-    char            c;
-   
-    while ((c = *haystack++) != 0) {
+    size_t  count = 0;
+    int     i = 0;
+
+    while ((c = haystack[i++])) {
         count+= (c == needle);
     }
 
     return count;
 }
-
 
 #endif

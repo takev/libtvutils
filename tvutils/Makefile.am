@@ -1,15 +1,23 @@
 
-AM_CFLAGS = -fstrict-aliasing -O3 -Wall -W -Werror -Wstrict-aliasing=2 -pedantic -Wno-sign-compare -Wno-long-long -Wno-unused -std=gnu99
+DEFAULT_INCLUDES=-I$(top_srcdir)
+
+AM_CFLAGS = -fstrict-aliasing -O3 -Wall -W -Werror -Wstrict-aliasing=2 -pedantic -Wno-sign-compare -Wno-long-long -Wno-unused -std=gnu99 $(DEPS_CFLAGS) $(DEFAULT_INCLUDES)
 
 #dist_man3_MANS = uniq_init.3 uniq_time.3 uniq_tipc_node.3 uniq_tipc_cuid.3
 
-DEFAULT_INCLUDES=-I$(top_srcdir)
 
 lib_LTLIBRARIES = libtvutils.la
 
 libtvutils_la_LDFLAGS = -version-info $(SHARED_VERSION_INFO)
 libtvutils_la_SOURCES = tvutils.c
 libtvutils_la_LIBADD = $(LIBS)
+
+check_PROGRAMS = bsearch_test
+
+bsearch_test_SOURCES = bsearch_test.c
+bsearch_test_LDADD = -ltvutils
+
+TESTS = bsearch_test
 
 EXTRA_DIST=\
 	memory_access.h.php\
@@ -39,7 +47,10 @@ library_include_HEADERS =\
 	 number.h\
 	 string.h\
 	 memory_access.h\
-	 ringbuffer.h
+	 ringbuffer.h\
+	 macros.h\
+	 unit_test.h\
+	 bsearch.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = tvutils.pc
@@ -48,7 +59,8 @@ CLEANFILES=\
 	endian.h\
 	memory_acces.h\
 	atomic_gcc.h\
-	number.h
+	number.h\
+	string.h
 
 memory_access.h: memory_access.h.php
 	${PHP} $< >$@

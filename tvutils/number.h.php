@@ -17,13 +17,22 @@
 #ifndef TVU_NUMBER_H
 #define TVU_NUMBER_H
 
+#include <tvutils/macros.h>
 #include <stdint.h>
+#include <string.h>
+#include <math.h>
 
 <?php
 $bit_sizes = array(8, 16, 32, 64);
+$signs = array("i", "u");
 foreach ($bit_sizes as $bit_size) {
     $nr_bytes = $bit_size / 8;
+    foreach ($signs as $sign) {
+        $_sign = $sign == "u" ? "u" : "";
+        $__sign = $sign == "u" ? "unsigned" : "signed";
 ?>
+
+<?php if ($sign == "u") { ?>
 /** Sign extend a integer.
  * The integer of 'b' bits is stored in x. A signed integer is returned.
  * @param x     The integer to sign extend.
@@ -35,13 +44,7 @@ static inline int<?=$bit_size?>_t tvu_sign_extend_u<?=$bit_size?>(uint<?=$bit_si
     unsigned int m = (sizeof (x) * 8) - b;
     return (int<?=$bit_size?>_t)(x << m) >> m;
 }
-<?php } ?>
 
-<?php
-$bit_sizes = array(8, 16, 32, 64);
-foreach ($bit_sizes as $bit_size) {
-    $nr_bytes = $bit_size / 8;
-?>
 /** Round up integer.
  * 
  * @param x     The integer to round up.
@@ -63,4 +66,38 @@ static inline uint<?=$bit_size?>_t tvu_round_down_u<?=$bit_size?>(uint<?=$bit_si
 }
 <?php } ?>
 
+/** Get the minimum of two integers.
+ * @param a     The integer.
+ * @param b     The integer.
+ * @returns     the smallest integer.
+ */
+static inline uint<?=$bit_size?>_t tvu_min_<?=$sign?><?=$bit_size?>(<?=$_sign?>int<?=$bit_size?>_t a, <?=$_sign?>int<?=$bit_size?>_t b)
+{
+    return TVU_MIN(a, b);
+}
+
+/** Get the maximum of two integers.
+ * @param a     The integer.
+ * @param b     The integer.
+ * @returns     the largest integer.
+ */
+static inline uint<?=$bit_size?>_t tvu_max_<?=$sign?><?=$bit_size?>(<?=$_sign?>int<?=$bit_size?>_t a, <?=$_sign?>int<?=$bit_size?>_t b)
+{
+    return TVU_MAX(a, b);
+}
+
+/** Get the absolute value of an integer.
+ * @param x     The signed integer.
+ * @returns     An unsigned integer.
+ */
+static inline uint<?=$bit_size?>_t tvu_abs_<?=$sign?><?=$bit_size?>(<?=$_sign?>int<?=$bit_size?>_t x)
+{
+    <?php if ($sign == "i") { ?>
+        return TVU_ABS(x);
+    <?php } else { ?>
+        return x;
+    <?php } ?>
+}
+
+<?php }} ?>
 #endif

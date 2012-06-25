@@ -14,16 +14,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-#ifndef TVU_BUFFER_H
-#define TVU_BUFFER_H
+#ifndef TVU_MACROS_H
+#define TVU_MACROS_H
 
-#include <stdint.h>
-#include <unistd.h>
-
-typedef struct {
-    uint8_t *data;
-    size_t  size;
-    off_t   offset;
-} tvu_buffer_t;
+#define TVU_MAX(a, b)   ((a) > (b) ? (a) : (b))
+#define TVU_MIN(a, b)   ((a) < (b) ? (a) : (b))
+#define TVU_UNSIGNED(a) ((a) > 0  ? (a) : 0)
+#define TVU_CLAMP(a)    ((a) > -1 ? ((a < 1) ? (a) : 1) : -1)
+#define TVU_ABS(a)      ((a) >= 0 ? (a) : -(a))
 
 #endif
