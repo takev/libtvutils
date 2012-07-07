@@ -12,12 +12,15 @@ libtvutils_la_LDFLAGS = -version-info $(SHARED_VERSION_INFO)
 libtvutils_la_SOURCES = tvutils.c
 libtvutils_la_LIBADD = $(LIBS)
 
-check_PROGRAMS = bsearch_test
+check_PROGRAMS = bsearch_test dynarg_test
 
 bsearch_test_SOURCES = bsearch_test.c
 bsearch_test_LDADD = -ltvutils
 
-TESTS = bsearch_test
+dynarg_test_SOURCES = dynarg_test.c
+dynarg_test_LDADD = -ltvutils
+
+TESTS = bsearch_test dynarg_test
 
 EXTRA_DIST=\
 	memory_access.h.php\
@@ -33,24 +36,26 @@ BUILT_SOURCES=\
 
 library_includedir=$(includedir)/tvutils-$(VERSION)/tvutils
 library_include_HEADERS =\
-	 tvutils.h\
-	 buffer.h\
-	 target.h\
-	 compiler.h\
-	 stdfloat.h\
-	 atomic.h\
-	 atomic_gcc.h\
-	 time.h\
-	 time_bsd.h\
-	 time_posix1993.h\
-	 endian.h\
-	 number.h\
-	 string.h\
-	 memory_access.h\
-	 ringbuffer.h\
-	 macros.h\
-	 unit_test.h\
-	 bsearch.h
+	tvutils.h\
+	buffer.h\
+	target.h\
+	compiler.h\
+	stdfloat.h\
+	atomic.h\
+	atomic_gcc.h\
+	dynarg.h\
+	dynarg_sysv_x86_64.h\
+	time.h\
+	time_bsd.h\
+	time_posix1993.h\
+	endian.h\
+	number.h\
+	string.h\
+	memory_access.h\
+	ringbuffer.h\
+	macros.h\
+	unit_test.h\
+	bsearch.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = tvutils.pc

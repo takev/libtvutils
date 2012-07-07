@@ -64,6 +64,7 @@
 #include <tvutils/buffer.h>
 #include <tvutils/time.h>
 #include <tvutils/atomic.h>
+#include <tvutils/dynarg.h>
 #include <tvutils/number.h>
 #include <tvutils/string.h>
 #include <tvutils/endian.h>

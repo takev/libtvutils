@@ -16,6 +16,15 @@
         return 1;\
     }
 
+#define TVU_UNITTEST_STRCMP(s1, s2)\
+    if (strcmp(s1, s2) != 0) {\
+        fprintf(stderr, "----------------\n");\
+        fprintf(stderr, "Expected: '%s'\n", s2);\
+        fprintf(stderr, "Got:      '%s'\n", s1);\
+        fprintf(stderr, "----------------\n");\
+        return 1;\
+    }
+
 #define TVU_UNITTEST_CMP(a, b)\
     if (a != b) {\
         fprintf(stderr, "----------------\n");\

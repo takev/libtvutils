@@ -24,6 +24,37 @@
 
 <?php
 $bit_sizes = array(8, 16, 32, 64);
+$sizes = array(2, 4);
+$signs = array("i", "u");
+foreach ($bit_sizes as $bit_size) {
+    $nr_bytes = $bit_size / 8;
+    foreach ($signs as $sign) {
+        $_sign = $sign == "u" ? "u" : "";
+        $__sign = $sign == "u" ? "unsigned" : "signed";
+        foreach ($sizes as $size) {
+?>
+typedef struct {
+     <?=$_sign?>int<?=$bit_size?>_t v[<?=$size?>];
+} vec<?=$size?>_<?=$sign?><?=$bit_size?>_t;
+
+<?php }}} ?>
+
+static inline vec2_i32_t tvu_div_i32(int32_t numer, int32_t denom)
+{
+    div_t       a = div(numer, denom);
+    vec2_i32_t  b = {.v = {a.quot, a.rem}};
+    return b;
+}
+
+static inline vec2_i64_t tvu_div_i64(int64_t numer, int64_t denom)
+{
+    lldiv_t     a = lldiv(numer, denom);
+    vec2_i64_t  b = {.v = {a.quot, a.rem}};
+    return b;
+}
+
+<?php
+$bit_sizes = array(8, 16, 32, 64);
 $signs = array("i", "u");
 foreach ($bit_sizes as $bit_size) {
     $nr_bytes = $bit_size / 8;

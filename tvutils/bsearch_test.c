@@ -77,4 +77,6 @@ int main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)))
 
     r = search_test(8);
     TVU_UNITTEST_CMP(r, 5);
+
+    return 0;
 }

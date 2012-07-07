@@ -14,8 +14,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-#ifndef TVU_ENDIAN_BSD_H
-#define TVU_ENDIAN_BSD_H
+#ifndef TVU_ENDIAN_H
+#define TVU_ENDIAN_H
 
 #if __GLIBC__ >= 2
 #include <byteswap.h>

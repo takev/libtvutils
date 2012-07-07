@@ -12,6 +12,7 @@ configure
 aclocal.m4
 buildutils
 autom4te.cache
+*.tar.gz
 */.deps/
 */.libs/
 */config.h.in
@@ -30,5 +31,5 @@ tvutils/endian.h
 tvutils/memory_access.h
 pyext/tvutils.py
 pyext/tvutils_wrap.c
-
+doxygen-doc
 
