@@ -56,6 +56,25 @@ typedef struct {
     _ ## ap->reg_save_area = ap ## _buf;
 
 /** Create a va_list structure.
+ * This function does not create a buffer on the stack.
+ *
+ * @param ap            The va_list structure to setup.
+ * @param extern_buf    Use extern buf as the buffer.
+ */
+#define tvu_va_make2(ap, extern_buf)\
+    char            *ap ## _buf = extern_buf;\
+    unsigned int    ap ## _gp_offset = 0;\
+    unsigned int    ap ## _fp_offset = 48;\
+    unsigned int    ap ## _ov_offset = TVU_REG_SAVE_AREA_SIZE;\
+    unsigned int    ap ## _num_gp;\
+    unsigned int    ap ## _num_fp;\
+    tvu_va_list_t   *_ ## ap = (tvu_va_list_t *)ap;\
+    _ ## ap->gp_offset = 0;\
+    _ ## ap->fp_offset = 48;\
+    _ ## ap->overflow_arg_area = &ap ## _buf[TVU_REG_SAVE_AREA_SIZE];\
+    _ ## ap->reg_save_area = ap ## _buf;
+
+/** Create a va_list structure.
  * This adds a bit over 1024 bytes on the stack.
  *
  * @param ap    The va_list structure to setup.

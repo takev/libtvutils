@@ -49,18 +49,19 @@
  * file tries to solve most problems, including big- and little-endian conversion,
  * aligned or unaligned memory access and strict aliasing.
  *
- * \section stdfloat Standard float
- * stdfloat.h just defines float32_t and float64_t to mirror what has been done for
+ * \section types Standard types
+ * types.h just defines float32_t, float64_t and float80_t to mirror what has been done for
  * the explicit integer definitions in stdint.h
+ * It also defines the standard types: tvu_int and tvu_float.
  *
  * \section integer Integer utilities
  * iteger.h Includes a collection of functions operating on integers.
  */
 
+#include <tvutils/types.h>
 #include <tvutils/target.h>
 #include <tvutils/compiler.h>
 #include <tvutils/macros.h>
-#include <tvutils/stdfloat.h>
 #include <tvutils/buffer.h>
 #include <tvutils/time.h>
 #include <tvutils/atomic.h>

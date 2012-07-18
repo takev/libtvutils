@@ -12,15 +12,18 @@ libtvutils_la_LDFLAGS = -version-info $(SHARED_VERSION_INFO)
 libtvutils_la_SOURCES = tvutils.c
 libtvutils_la_LIBADD = $(LIBS)
 
-check_PROGRAMS = bsearch_test dynarg_test
+check_PROGRAMS = bsearch_test ringbuffer_test dynarg_test
 
 bsearch_test_SOURCES = bsearch_test.c
 bsearch_test_LDADD = -ltvutils
 
+ringbuffer_test_SOURCES = ringbuffer_test.c
+ringbuffer_test_LDADD = -ltvutils
+
 dynarg_test_SOURCES = dynarg_test.c
 dynarg_test_LDADD = -ltvutils
 
-TESTS = bsearch_test dynarg_test
+TESTS = bsearch_test ringbuffer_test dynarg_test
 
 EXTRA_DIST=\
 	memory_access.h.php\
@@ -40,7 +43,7 @@ library_include_HEADERS =\
 	buffer.h\
 	target.h\
 	compiler.h\
-	stdfloat.h\
+	types.h\
 	atomic.h\
 	atomic_gcc.h\
 	dynarg.h\

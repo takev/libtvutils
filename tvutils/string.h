@@ -18,8 +18,7 @@
 #define TVU_STRING_H
 
 #include <stdint.h>
-
-typedef uint8_t utf8_t;
+#include <tvutils/types.h>
 
 static inline size_t tvu_count_character(utf8_t const * restrict haystack, utf8_t needle)
 {

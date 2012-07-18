@@ -35,6 +35,26 @@
         return 1;\
     }
 
+#define TVU_UNITTEST_NULL(a)\
+    if (a != NULL) {\
+        fprintf(stderr, "----------------\n");\
+        fprintf(stderr, "Subtest failed at %s:%i.\n", __FILE__, __LINE__);\
+        fprintf(stderr, "Expected: NULL\n");\
+        fprintf(stderr, "Got:      %llx\n", (unsigned long long)((char *)a - (char *)NULL));\
+        fprintf(stderr, "----------------\n");\
+        return 1;\
+    }
+
+#define TVU_UNITTEST_NOT_NULL(a)\
+    if (a == NULL) {\
+        fprintf(stderr, "----------------\n");\
+        fprintf(stderr, "Subtest failed at %s:%i.\n", __FILE__, __LINE__);\
+        fprintf(stderr, "Expected: NOT NULL\n");\
+        fprintf(stderr, "Got:      NULL\n");\
+        fprintf(stderr, "----------------\n");\
+        return 1;\
+    }
+
 
 
 

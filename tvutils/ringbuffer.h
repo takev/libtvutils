@@ -17,8 +17,10 @@
 #ifndef TVU_RINGBUFFER_H
 #define TVU_RINGBUFFER_H
 
+#include <stddef.h>
 #include <errno.h>
 #include <tvutils/number.h>
+#include <stdio.h>
 
 #define TVU_RINGPACKET_FREE         0x00000000
 #define TVU_RINGPACKET_ALLOC        0x40000000
@@ -60,7 +62,7 @@ typedef struct {
  */
 static inline size_t tvu_ringpacket_hdrsize(void)
 {
-    return sizeof (uint32_t);
+    return offsetof(tvu_ringpacket_t, data);
 }
 
 /** Finished producing the packet.
@@ -156,7 +158,7 @@ static inline size_t tvu_ringpacket_pktsize(tvu_ringpacket_t const volatile *sel
 
 static inline size_t tvu_ring_hdrsize(void)
 {
-    return sizeof (uint64_t) * 4;
+    return offsetof(tvu_ringbuffer_t, data);
 }
 
 /** Initialize the ring buffer.
@@ -178,6 +180,20 @@ static inline int tvu_ring_init(tvu_ringbuffer_t *self, size_t size)
     return 0;
 }
 
+/** Print debug information for the ring buffer.
+ * @param self      Ring buffer.
+ */
+void tvu_ring_debug(tvu_ringbuffer_t *self)
+{
+    fprintf(stderr, "Ringbuffer %llx(%llu) H:%llu T:%llu F:%llu\n",
+        (unsigned long long)self->data,
+        (unsigned long long)self->size,
+        (unsigned long long)self->head,
+        (unsigned long long)self->tail,
+        (unsigned long long)self->free
+    );
+}
+
 /** Advance the free pointer.
  * After a tail is advanced it will take a while until it is actually
  * consumed. This function needs to be called to move the free pointer
@@ -188,17 +204,24 @@ static inline int tvu_ring_init(tvu_ringbuffer_t *self, size_t size)
 static inline void tvu_ring_advance_free(tvu_ringbuffer_t *self)
 {
     uint64_t            old_free;
+    uint64_t            old_tail;
     uint64_t            new_free;
     tvu_ringpacket_t    *packet;
 
     for (;;) {
         do {
             old_free = tvu_atomic_read_u64(&self->free);
+            old_tail = tvu_atomic_read_u64(&self->tail);
+
+            if (old_free >= old_tail) {
+                goto last;
+            }
 
             packet = (tvu_ringpacket_t *)&self->data[old_free];
             if (!tvu_ringpacket_isfree(packet)) {
                 goto last;
             }
+
             new_free = old_free + tvu_ringpacket_pktsize(packet);
 
         } while (!tvu_atomic_cas_u64(&self->free, old_free, new_free));
@@ -235,7 +258,7 @@ static inline tvu_ringpacket_t *tvu_ring_head(tvu_ringbuffer_t *self, size_t siz
         new_head = old_head + padded_size + (need_empty_packet_at_end ? size_at_end : 0);
 
         // Check if the head is progressed beyond the tail.
-        if (unlikely(new_head >= (old_free + self->size))) {
+        if (unlikely(new_head > (old_free + self->size))) {
             errno = EAGAIN;
             return NULL;
         }

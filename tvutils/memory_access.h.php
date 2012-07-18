@@ -19,7 +19,7 @@
 
 #include <stdint.h>
 #include <tvutils/target.h>
-#include <tvutils/stdfloat.h>
+#include <tvutils/types.h>
 #include <tvutils/endian.h>
 
 typedef union {

@@ -14,10 +14,27 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-#ifndef TVU_STDFLOAT_H
-#define TVU_STDFLOAT_H
+#ifndef TVU_TYPES_H
+#define TVU_TYPES_H
 
-typedef float   float32_t;
-typedef double  float64_t;
+#include <stdint.h>
+
+typedef float       float32_t;
+typedef double      float64_t;
+typedef long double float80_t;
+
+/** Standard float type.
+ * Use this type anywhere you need a non specific sized float.
+ */
+typedef float64_t   tvu_float;
+
+/** Standard int type.
+ * Use this type anywhere you need a non specific sized int.
+ */
+typedef int64_t     tvu_int;
+
+/** Standard UTF-t string type.
+ */
+typedef char     utf8_t;
 
 #endif
