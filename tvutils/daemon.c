@@ -31,17 +31,15 @@
 int     tvu_daemon_fd = -1;
 utf8_t  *tvu_daemon_pidfile = NULL;
 
-tvu_int tvu_deamon(const utf8_t * restrict pidfile)
+tvu_int tvu_daemon(const utf8_t * restrict pidfile)
 {
     utf8_t          pid_s[22];
     int             fd;
-    struct rlimit   rlp;
 
     tvu_daemon_pidfile = strdup(pidfile);
 
     if ((tvu_daemon_fd = open(pidfile, O_WRONLY | O_CREAT | O_TRUNC | O_EXLOCK | O_NONBLOCK, 0666)) == -1) {
         // If we can't open or create the file, then the other process definitly still is running.
-        fprintf(stderr, "Could not open pidfile '%s', another process may still have the lock.\n", pidfile);
         return -1;
     }
 
@@ -50,7 +48,6 @@ tvu_int tvu_deamon(const utf8_t * restrict pidfile)
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     if (daemon(0, 1) == -1) {
 #pragma GCC diagnostic pop
-        perror("Could not daemonize");
         return -1;
     }
 
@@ -58,13 +55,9 @@ tvu_int tvu_deamon(const utf8_t * restrict pidfile)
     snprintf(pid_s, 22, "%lli\n", (long long)getpid());
     write(tvu_daemon_fd, pid_s, strlen(pid_s));
     
-    if (getrlimit(RLIMIT_NOFILE, &rlp) == -1) {
-        return -1;
-    }
-
     // Since we instruction daemon() not to close file, we have to do it
     // here manually.
-    for (fd = 0; fd < rlp.rlim_max; fd++) {
+    for (fd = 0; fd < 256; fd++) {
         if (fd != tvu_daemon_fd) {
             // Only close files that are not the pidfile, and close them all
             // without checking errors.
@@ -80,16 +73,12 @@ tvu_int tvu_deamon(const utf8_t * restrict pidfile)
 void tvu_daemon_atexit(void)
 {
     if (tvu_daemon_fd != -1) {
-        if (close(tvu_daemon_fd) == -1) {
-            perror("Could not close pidfile.");
-        }
+        (void)close(tvu_daemon_fd);
         tvu_daemon_fd = -1;
     }
 
     if (tvu_daemon_pidfile) {
-        if (unlink(tvu_daemon_pidfile) == -1) {
-            perror("Could not unlink pidfile.");
-        }
+        (void)unlink(tvu_daemon_pidfile);
         free(tvu_daemon_pidfile);
         tvu_daemon_pidfile = NULL;
     }

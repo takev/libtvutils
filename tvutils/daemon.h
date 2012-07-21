@@ -28,7 +28,7 @@
  * @param pidfile   Location of pid file.
  * @returns         -1 on error.
  */
-tvu_int tvu_deamon(const utf8_t * restrict pidfile);
+tvu_int tvu_daemon(const utf8_t * restrict pidfile);
 
 /** Close and delete the pid file.
  * This function is called atexit automatically, so you do not have to invoke this.

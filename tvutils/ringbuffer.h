@@ -183,7 +183,7 @@ static inline int tvu_ring_init(tvu_ringbuffer_t *self, size_t size)
 /** Print debug information for the ring buffer.
  * @param self      Ring buffer.
  */
-void tvu_ring_debug(tvu_ringbuffer_t *self)
+static inline void tvu_ring_debug(tvu_ringbuffer_t *self)
 {
     fprintf(stderr, "Ringbuffer %llx(%llu) H:%llu T:%llu F:%llu\n",
         (unsigned long long)self->data,

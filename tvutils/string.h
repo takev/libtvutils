@@ -20,6 +20,11 @@
 #include <stdint.h>
 #include <tvutils/types.h>
 
+/** Count a character in a string.
+ * @param haystack  The string to search in.
+ * @param needle    The character to search for.
+ * @returns         The number of times needle is found in haystack.
+ */
 static inline size_t tvu_count_character(utf8_t const * restrict haystack, utf8_t needle)
 {
     size_t  count = 0;
@@ -33,9 +38,11 @@ static inline size_t tvu_count_character(utf8_t const * restrict haystack, utf8_
     return count;
 }
 
-static inline size_t tvu_strlen(utf8_t const * restrict s)
-{
-    return strlen((char const *)s);
-}
+/** Print error message.
+ * Like the system perror() function, but with formatted string.
+ * @param fmt   Formatted string.
+ * @param ...   Parameters to format.
+ */
+void tvu_perror(utf8_t const * restrict fmt, ...) __attribute ((format (printf, 1, 0)));
 
 #endif

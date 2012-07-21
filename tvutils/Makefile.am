@@ -9,7 +9,7 @@ AM_CFLAGS = -fstrict-aliasing -O3 -Wall -W -Werror -Wstrict-aliasing=2 -pedantic
 lib_LTLIBRARIES = libtvutils.la
 
 libtvutils_la_LDFLAGS = -version-info $(SHARED_VERSION_INFO)
-libtvutils_la_SOURCES = tvutils.c daemon.c
+libtvutils_la_SOURCES = tvutils.c daemon.c string.c
 libtvutils_la_LIBADD = $(LIBS)
 
 check_PROGRAMS = bsearch_test ringbuffer_test dynarg_test
