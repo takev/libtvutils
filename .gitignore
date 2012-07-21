@@ -29,6 +29,8 @@ tvutils/tvutils.pc
 tvutils/target.h
 tvutils/endian.h
 tvutils/memory_access.h
+tvutils/number.h
+tvutils/atomic_gcc.h
 pyext/tvutils.py
 pyext/tvutils_wrap.c
 doxygen-doc

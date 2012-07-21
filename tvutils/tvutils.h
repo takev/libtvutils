@@ -72,6 +72,7 @@
 #include <tvutils/memory_access.h>
 #include <tvutils/ringbuffer.h>
 #include <tvutils/unit_test.h>
+#include <tvutils/daemon.h>
 
 int tvu_init(void);
 
