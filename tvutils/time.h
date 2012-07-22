@@ -20,6 +20,8 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include <time.h>
+#include <tvutils/types.h>
 
 // 2012-01-01 with reference 1970-01-01 in seconds.
 #define TVU_TIME_EPOCH     1325376000ULL
@@ -32,6 +34,101 @@
  * number of seconds since January 1st, 2012.
  */
 typedef int64_t tvu_time_t;
+
+/** The time split up in seconds and nanoseconds.
+ */
+typedef struct {
+    tvu_time_t  tv_sec;
+    tvu_int     tv_nsec;
+} tvu_timespec_t;
+
+static inline tvu_timespec_t tvu_to_timespec(tvu_time_t t)
+{
+    tvu_timespec_t ts = {
+        .tv_sec = t >> 32,
+        .tv_nsec = (t & 0x00000000ffffffffLL) / TVU_NS_TO_FRAC
+    };
+    return ts;
+}
+
+/** Convert timestamp to time_t.
+ */
+static inline time_t tvu_to_timet(tvu_time_t t)
+{
+    tvu_int seconds_since_2012 = t >> 32;
+    tvu_int seconds_since_1970 = t + TVU_TIME_EPOCH;
+    return seconds_since_1970;
+}
+
+/** Convert timestamp into a time tuple structure.
+ */
+static inline struct tm tvu_to_tm_utc(tvu_time_t t)
+{
+    time_t      tt = tvu_to_timet(t);
+    struct tm   ttuple;
+
+    gmtime_r(&tt, &ttuple);
+    return ttuple;
+}
+
+/** Format a date time.
+ * Format a timestamp at utc using strftime semantics. As extra you may use %N at the
+ * end of the format to add 9 digit nanoseconds to the string.
+ *
+ * @param s         Output string.
+ * @param maxsize   Size of output string.
+ * @param _format   Format string.
+ * @param t         Timestamp.
+ */
+tvu_int tvu_strftime_utc(utf8_t * restrict s, tvu_int maxsize, const utf8_t *restrict _format, tvu_time_t t);
+
+/** Format a date.
+ * Format a string like this: YYYY-MM-DD
+ * This function adds a nul terminating character.
+ *
+ * @param s     pointer to a string of 11 bytes.
+ * @param t     timestamp
+ */
+static inline tvu_int tvu_fmt_date(utf8_t * restrict s, tvu_time_t t)
+{
+    return tvu_strftime_utc(s, 11, "%Y-%m-%d", t);
+}
+
+/** Format a time.
+ * Format a string like this: HH:MM:SS
+ * This function adds a nul terminating character.
+ *
+ * @param s     pointer to a string of 9 bytes.
+ * @param t     timestamp
+ */
+static inline tvu_int tvu_fmt_time(utf8_t * restrict s, tvu_time_t t)
+{
+    return tvu_strftime_utc(s, 9, "%H:%M:%S", t);
+}
+
+/** Format a date time.
+ * Format a string like this: YYYY-MM-DD HH:MM:SS
+ * This function adds a nul terminating character.
+ *
+ * @param s     pointer to a string of 20 bytes.
+ * @param t     timestamp
+ */
+static inline tvu_int tvu_fmt_datetime(utf8_t * restrict s, tvu_time_t t)
+{
+    return tvu_strftime_utc(s, 20, "%Y-%m-%d %H:%M:%S", t);
+}
+
+/** Format a timestamp.
+ * Format a string like this: YYYY-MM-DD HH:MM:SS.nnnnnnnnn
+ * This function adds a nul terminating character.
+ *
+ * @param s     pointer to a string of 29 bytes.
+ * @param t     timestamp
+ */
+static inline tvu_int tvu_fmt_timestamp(utf8_t * restrict s, tvu_time_t t)
+{
+    return tvu_strftime_utc(s, 29, "%Y-%m-%d %H:%M:%S.%N", t);
+}
 
 #if __GLIBC__ >= 2
 #include <tvutils/time_posix1993.h>

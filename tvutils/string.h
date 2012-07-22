@@ -18,7 +18,14 @@
 #define TVU_STRING_H
 
 #include <stdint.h>
+#include <string.h>
+#include <alloca.h>
+#include <stdlib.h>
 #include <tvutils/types.h>
+
+/** String dupplicate with string on the stack.
+ */
+#define tvu_strdupa(src)    strcpy(alloca(strlen(src) + 1), src)
 
 /** Count a character in a string.
  * @param haystack  The string to search in.

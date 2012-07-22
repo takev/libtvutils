@@ -19,8 +19,9 @@
 
 #include <stddef.h>
 #include <errno.h>
-#include <tvutils/number.h>
 #include <stdio.h>
+#include <tvutils/number.h>
+#include <tvutils/buffer.h>
 
 #define TVU_RINGPACKET_FREE         0x00000000
 #define TVU_RINGPACKET_ALLOC        0x40000000
@@ -154,6 +155,22 @@ static inline size_t tvu_ringpacket_size(tvu_ringpacket_t const volatile *self)
 static inline size_t tvu_ringpacket_pktsize(tvu_ringpacket_t const volatile *self)
 {
     return tvu_round_up_u64(tvu_ringpacket_size(self), tvu_ringpacket_hdrsize()) + tvu_ringpacket_hdrsize();
+}
+
+/** Convert a packet into a buffer.
+ * @param packet    A ringbuffer packet.
+ * @returns         A buffer object.
+ */
+static inline tvu_buffer_t tvu_rinpacket_to_buffer(tvu_ringpacket_t *self)
+{
+    tvu_buffer_t buffer = {
+        .data = self->data,
+        .size = tvu_ringpacket_size(self),
+        .offset = 0,
+        .fd = TVU_BUFFER_UNKNOWN
+    };
+
+    return buffer;
 }
 
 static inline size_t tvu_ring_hdrsize(void)
