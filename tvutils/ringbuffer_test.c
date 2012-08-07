@@ -21,10 +21,10 @@
 char                buffer[32 + 32];
 tvu_ringbuffer_t    *ring = (tvu_ringbuffer_t *)buffer;
 
-int main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)))
+int main(int argc __attribute__((unused)), char *argv[])
 {
     TVU_UNITTEST_INIT
-    tvu_init();
+    tvu_init(argv[0]);
 
     tvu_ringpacket_t *packet;
 

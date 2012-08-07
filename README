@@ -44,4 +44,31 @@ Integer utilities
 -----------------
 integer.h Includes a collection of functions operating on integers.
 
+Ring buffer
+-----------
+A lock free ring buffer that can be shared between threads/processes. The ring buffer
+works very much like a message queue with variable sized messages. Access to the
+ring buffer is done directly through pointers into the memory of the ring buffer.
+Direct access is fast with the least number of copies needing to be made.
+
+Dynamic arguments
+-----------------
+Functions to build a va_list from scratch.
+
+Base64 / Base85
+---------------
+Function to display a int64 in base85, in 10 characters.
+
+Binary search
+-------------
+A binary search which also find the nearest-lower value.
+
+Buffer
+------
+A buffer object, which contains the pointer to data, the size of the data, and
+the offset into the data.
+
+Daemon
+------
+Create a daemon process, and manage a pid file correctly, including locking.
 

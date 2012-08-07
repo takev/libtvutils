@@ -2,6 +2,7 @@
 #define TVU_UNIT_TEST_H
 
 #include <stdio.h>
+#include <tvutils/macros.h>
 
 #define TVU_UNITTEST_INIT\
     char tvu_unittest_fmt[128];
@@ -29,8 +30,19 @@
     if (a != b) {\
         fprintf(stderr, "----------------\n");\
         fprintf(stderr, "Subtest failed at %s:%i.\n", __FILE__, __LINE__);\
-        fprintf(stderr, "Expected: %lli\n", (unsigned long long)b);\
-        fprintf(stderr, "Got:      %lli\n", (unsigned long long)a);\
+        fprintf(stderr, "Expected: %lli\n", (long long)b);\
+        fprintf(stderr, "Got:      %lli\n", (long long)a);\
+        fprintf(stderr, "----------------\n");\
+        return 1;\
+    }
+
+#define TVU_UNITTEST_EPSILON_CMP(a, b, e)\
+    if (TVU_ABS(a - b) > e) {\
+        fprintf(stderr, "----------------\n");\
+        fprintf(stderr, "Subtest failed at %s:%i.\n", __FILE__, __LINE__);\
+        fprintf(stderr, "Expected: %lli\n", (long long)b);\
+        fprintf(stderr, "Got:      %lli\n", (long long)a);\
+        fprintf(stderr, "Difference of %lli, larger than epsilon (%lli)\n", (long long)TVU_ABS(a - b), (long long)e);\
         fprintf(stderr, "----------------\n");\
         return 1;\
     }

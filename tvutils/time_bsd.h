@@ -41,6 +41,7 @@ static inline tvu_time_t tvu_time(void)
 
     t  = ((uint64_t)ts.tv_sec  - TVU_TIME_EPOCH) << 32;
     t |= ((uint64_t)ts.tv_usec * TVU_US_TO_FRAC) >> 32;
+    t += 2;     // Add half a nanosecond.
     return t;
 }
 

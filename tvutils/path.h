@@ -14,10 +14,28 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-#include <tvutils/tvutils.h>
+#ifndef TVU_PATH_H
+#define TVU_PATH_H
 
-int tvu_init(void)
-{
-    return 0;
-}
+#include <stdlib.h>
+#include <limits.h>
+#include <tvutils/types.h>
 
+/** The name of the program without the path.
+ */
+extern utf8_t  tvu_program_name[PATH_MAX];
+
+/** The path + program as comming from argument 0.
+ */
+extern utf8_t  tvu_program_path[PATH_MAX];
+
+/** The location where the program is located.
+ */
+extern utf8_t  tvu_program_dir[PATH_MAX];
+
+/** Parse argument 0 for the program name and path.
+ * @param argv0     argument 0
+ */
+void tvu_path_init(utf8_t *argv0);
+
+#endif

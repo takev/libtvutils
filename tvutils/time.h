@@ -46,9 +46,18 @@ static inline tvu_timespec_t tvu_to_timespec(tvu_time_t t)
 {
     tvu_timespec_t ts = {
         .tv_sec = t >> 32,
-        .tv_nsec = (t & 0x00000000ffffffffLL) / TVU_NS_TO_FRAC
+        .tv_nsec = (t << 32) / TVU_NS_TO_FRAC
     };
     return ts;
+}
+
+/** Number of hours since 2012-01-01.
+ * @param t     Timestamp.
+ * @returns     Number of hours since 2012-01-01.
+ */
+static inline tvu_int tvu_to_hours(tvu_time_t t)
+{
+    return (t >> 32) / 3600;
 }
 
 /** Convert timestamp to time_t.
@@ -56,9 +65,11 @@ static inline tvu_timespec_t tvu_to_timespec(tvu_time_t t)
 static inline time_t tvu_to_timet(tvu_time_t t)
 {
     tvu_int seconds_since_2012 = t >> 32;
-    tvu_int seconds_since_1970 = t + TVU_TIME_EPOCH;
+    tvu_int seconds_since_1970 = seconds_since_2012 + TVU_TIME_EPOCH;
     return seconds_since_1970;
 }
+
+#include <stdio.h>
 
 /** Convert timestamp into a time tuple structure.
  */
@@ -94,6 +105,18 @@ static inline tvu_int tvu_fmt_date(utf8_t * restrict s, tvu_time_t t)
     return tvu_strftime_utc(s, 11, "%Y-%m-%d", t);
 }
 
+/** Format a short date.
+ * Format a string like this: YYYYMMDD
+ * This function adds a nul terminating character.
+ *
+ * @param s     pointer to a string of 9 bytes.
+ * @param t     timestamp
+ */
+static inline tvu_int tvu_fmt_shortdate(utf8_t * restrict s, tvu_time_t t)
+{
+    return tvu_strftime_utc(s, 9, "%Y%m%d", t);
+}
+
 /** Format a time.
  * Format a string like this: HH:MM:SS
  * This function adds a nul terminating character.
@@ -122,12 +145,12 @@ static inline tvu_int tvu_fmt_datetime(utf8_t * restrict s, tvu_time_t t)
  * Format a string like this: YYYY-MM-DD HH:MM:SS.nnnnnnnnn
  * This function adds a nul terminating character.
  *
- * @param s     pointer to a string of 29 bytes.
+ * @param s     pointer to a string of 30 bytes.
  * @param t     timestamp
  */
 static inline tvu_int tvu_fmt_timestamp(utf8_t * restrict s, tvu_time_t t)
 {
-    return tvu_strftime_utc(s, 29, "%Y-%m-%d %H:%M:%S.%N", t);
+    return tvu_strftime_utc(s, 30, "%Y-%m-%d %H:%M:%S.%N", t);
 }
 
 #if __GLIBC__ >= 2

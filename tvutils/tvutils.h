@@ -59,6 +59,8 @@
  */
 
 #include <tvutils/types.h>
+#include <tvutils/common.h>
+#include <tvutils/path.h>
 #include <tvutils/target.h>
 #include <tvutils/compiler.h>
 #include <tvutils/macros.h>
@@ -73,7 +75,6 @@
 #include <tvutils/ringbuffer.h>
 #include <tvutils/unit_test.h>
 #include <tvutils/daemon.h>
-
-int tvu_init(void);
+#include <tvutils/base64.h>
 
 #endif

@@ -43,13 +43,13 @@ uint8_t search_test(uint64_t key)
     return entry->index;
 }
 
-int main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)))
+int main(int argc __attribute__((unused)), char *argv[])
 {
     TVU_UNITTEST_INIT
 
     uint8_t r;
 
-    tvu_init();
+    tvu_init(argv[0]);
 
     r = search_test(0);
     TVU_UNITTEST_CMP(r, 0);

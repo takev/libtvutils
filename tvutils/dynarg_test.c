@@ -77,11 +77,11 @@ int test1(void)
     return 0;
 }
 
-int main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)))
+int main(int argc __attribute__((unused)), char *argv[])
 {
     int r;
 
-    tvu_init();
+    tvu_init(argv[0]);
 
     if ((r = test1()) != 0) {
         return r;

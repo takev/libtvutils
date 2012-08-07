@@ -161,7 +161,7 @@ static inline size_t tvu_ringpacket_pktsize(tvu_ringpacket_t const volatile *sel
  * @param packet    A ringbuffer packet.
  * @returns         A buffer object.
  */
-static inline tvu_buffer_t tvu_rinpacket_to_buffer(tvu_ringpacket_t *self)
+static inline tvu_buffer_t tvu_ringpacket_to_buffer(tvu_ringpacket_t *self)
 {
     tvu_buffer_t buffer = {
         .data = self->data,
@@ -176,6 +176,17 @@ static inline tvu_buffer_t tvu_rinpacket_to_buffer(tvu_ringpacket_t *self)
 static inline size_t tvu_ring_hdrsize(void)
 {
     return offsetof(tvu_ringbuffer_t, data);
+}
+
+/** Check if the ring buffer is initialized.
+ * @param self  A pointer to an (un)initialized ring buffer.
+ * @param size  The size of memory allocated for the ring buffer;
+ *              not the size of the ring buffer itself.
+ * @return      true if initialized, false if not.
+ */
+static inline bool tvu_ring_is_initialized(tvu_ringbuffer_t *self, size_t size)
+{
+    return self->size == tvu_round_down_u64(size - tvu_ring_hdrsize(), tvu_ringpacket_hdrsize());
 }
 
 /** Initialize the ring buffer.
