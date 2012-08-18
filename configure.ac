@@ -52,11 +52,19 @@ AS_IF(
     AC_SUBST([TVU_ALIGNED_ACCESS], [1]),
     AC_SUBST([TVU_ALIGNED_ACCESS], [0])
 )
+
 AS_IF(
     [test "x$ac_cv_c_bigendian" = "xyes"],
     AC_SUBST([TVU_BIG_ENDIAN], [1]),
     AC_SUBST([TVU_BIG_ENDIAN], [0])
 )
+
+AC_CHECK_HEADER(
+    [linux/tipc.h],
+    AC_SUBST([TVU_HAVE_TIPC], [1]),
+    AC_SUBST([TVU_HAVE_TIPC], [0])
+)
+
 
 AC_CONFIG_HEADERS([tvutils/config.h])
 AC_CONFIG_FILES([Makefile tvutils/Makefile tvutils/tvutils.pc tvutils/target.h pyext/Makefile])

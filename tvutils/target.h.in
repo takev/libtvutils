@@ -9,4 +9,8 @@
 #define TVU_ALIGNED_ACCESS
 #endif
 
+#if @TVU_HAVE_TIPC@
+#define TVU_HAVE_TIPC
+#endif
+
 #endif

@@ -43,6 +43,7 @@ BUILT_SOURCES=\
 library_includedir=$(includedir)/tvutils-$(VERSION)/tvutils
 library_include_HEADERS =\
 	tvutils.h\
+	target.h\
 	common.h\
 	path.h\
 	buffer.h\
@@ -65,7 +66,8 @@ library_include_HEADERS =\
 	unit_test.h\
 	daemon.h\
 	base64.h\
-	bsearch.h
+	bsearch.h\
+	service.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = tvutils.pc
