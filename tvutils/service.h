@@ -19,6 +19,7 @@
 #define TVU_SERVICE_H_IN
 
 #include <tvutils/target.h>
+#include <tvutils/random.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -108,7 +109,6 @@ static inline tvu_int tvu_service_parse_address(void * restrict _address, sockle
     struct sockaddr_un *address = _address;
     unsigned long long service_nr;
 
-    fprintf(stderr, "sun_path: '%s'\n", address->sun_path);
     if (memcmp(address->sun_path, "/tmp/tvu_service_", 17) == 0) {
         sscanf(address->sun_path, "/tmp/tvu_service_%19llu", &service_nr);
         return service_nr;
@@ -179,7 +179,7 @@ static inline int tvu_service_client_bind(int socket, tvu_int *service_nr)
 static inline int tvu_service_client_bind(int socket, tvu_int *service_nr)
 {
     tvu_int     pid = getpid() & 0xffffffff;
-    tvu_int     r = random() & 0xffffffff;
+    tvu_int     r = tvu_random() & 0xffffffff;
 
     *service_nr = -((pid << 32) | r);
     return tvu_service_bind(socket, *service_nr);;

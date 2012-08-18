@@ -9,10 +9,10 @@ AM_CFLAGS = -fstrict-aliasing -O3 -Wall -W -Werror -Wstrict-aliasing=2 -pedantic
 lib_LTLIBRARIES = libtvutils.la
 
 libtvutils_la_LDFLAGS = -version-info $(SHARED_VERSION_INFO)
-libtvutils_la_SOURCES = common.c path.c daemon.c string.c time.c base64.c
+libtvutils_la_SOURCES = common.c path.c daemon.c string.c time.c base64.c random.c
 libtvutils_la_LIBADD = $(LIBS)
 
-check_PROGRAMS = bsearch_test ringbuffer_test dynarg_test time_test
+check_PROGRAMS = bsearch_test ringbuffer_test dynarg_test time_test random_test
 
 bsearch_test_SOURCES = bsearch_test.c
 bsearch_test_LDADD = -ltvutils
@@ -26,7 +26,10 @@ dynarg_test_LDADD = -ltvutils
 time_test_SOURCES = time_test.c
 time_test_LDADD = -ltvutils
 
-TESTS = bsearch_test ringbuffer_test dynarg_test time_test
+random_test_SOURCES = random_test.c
+random_test_LDADD = -ltvutils
+
+TESTS = bsearch_test ringbuffer_test dynarg_test time_test random_test
 
 EXTRA_DIST=\
 	memory_access.h.php\
@@ -67,7 +70,8 @@ library_include_HEADERS =\
 	daemon.h\
 	base64.h\
 	bsearch.h\
-	service.h
+	service.h\
+	random.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = tvutils.pc

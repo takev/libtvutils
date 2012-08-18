@@ -36,6 +36,16 @@
         return 1;\
     }
 
+#define TVU_UNITTEST_NOT_CMP(a, b)\
+    if (a == b) {\
+        fprintf(stderr, "----------------\n");\
+        fprintf(stderr, "Subtest failed at %s:%i.\n", __FILE__, __LINE__);\
+        fprintf(stderr, "Not Expecting: %lli\n", (long long)b);\
+        fprintf(stderr, "Got:           %lli\n", (long long)a);\
+        fprintf(stderr, "----------------\n");\
+        return 1;\
+    }
+
 #define TVU_UNITTEST_EPSILON_CMP(a, b, e)\
     if (TVU_ABS(a - b) > e) {\
         fprintf(stderr, "----------------\n");\
