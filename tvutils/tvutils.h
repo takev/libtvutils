@@ -78,5 +78,6 @@
 #include <tvutils/base64.h>
 #include <tvutils/service.h>
 #include <tvutils/random.h>
+#include <tvutils/cuid.h>
 
 #endif

@@ -69,6 +69,8 @@ typedef int error_code;
 
 int tvu_init(char *argv);
 long long tvu_time(void);
+long long tvu_random(void);
+long long tvu_cuid(void);
 
 int tvu_service_socket(void);
 error_code tvu_service_bind(int socket, long long service_nr);
@@ -77,3 +79,4 @@ error_code tvu_service_unbind(int socket, long long service_nr);
 error_code tvu_service_close(int socket, long long service_nr);
 int tvu_service_sendto(int socket, long long service_nr, void *wbuffer, unsigned long long wbuffer_len, int flags);
 int tvu_service_recvfrom(int socket, long long *service_nr, void *rbuffer, unsigned long long rbuffer_len, int flags);
+

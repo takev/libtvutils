@@ -14,27 +14,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-#ifndef TVU_TYPES_H
-#define TVU_TYPES_H
+#include <stdio.h>
+#include <tvutils/tvutils.h>
+#include <tvutils/cuid.h>
 
-#include <stdint.h>
+int main(int argc __attribute__((unused)), char *argv[])
+{
+    tvu_cuid    r;
+    tvu_cuid    prev_r;
+    int         i;
 
-typedef float       float32_t;
-typedef double      float64_t;
-typedef long double float80_t;
+    TVU_UNITTEST_INIT
+    tvu_init(argv[0]);
 
-/** Standard float type.
- * Use this type anywhere you need a non specific sized float.
- */
-typedef float64_t   tvu_float;
+    // Loop 16 times to the buffer.
+    prev_r = tvu_random();
+    for (i = 0; i < 0x10000; i++) {
+        r = tvu_get_cuid();
+        TVU_UNITTEST_NOT_CMP(r, prev_r)
+        prev_r = r;
+    }
 
-/** Standard int type.
- * Use this type anywhere you need a non specific sized int.
- */
-typedef int64_t     tvu_int;
-
-/** Standard UTF-t string type.
- */
-typedef char        utf8_t;
-
-#endif
+    return 0;
+}

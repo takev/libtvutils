@@ -19,6 +19,7 @@
 #include <tvutils/common.h>
 #include <tvutils/base64.h>
 #include <tvutils/path.h>
+#include <tvutils/cuid.h>
 
 typedef tvu_int (*init_func_t)(void);
 
@@ -52,6 +53,7 @@ tvu_int tvu_init(utf8_t *argv0)
 
     tvu_base_init();
     tvu_path_init(argv0);
+    tvu_cuid_init();
 
     // Now call all init function of libraries.
     TVU_CALL_INIT("tvid_init");
