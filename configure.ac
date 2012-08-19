@@ -1,6 +1,6 @@
 
 AC_PREREQ(2.61)
-AC_INIT(tvutils, 0.3, take.vos@vosgames.nl)
+AC_INIT(tvutils, 0.4, take.vos@vosgames.nl)
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([buildutils])
 AM_INIT_AUTOMAKE()
