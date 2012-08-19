@@ -56,7 +56,6 @@ tvu_int tvu_init(utf8_t *argv0)
     tvu_cuid_init();
 
     // Now call all init function of libraries.
-    TVU_CALL_INIT("tvid_init");
     TVU_CALL_INIT("tvp_init");
     TVU_CALL_INIT("tvl_init");
     return lib_count;
