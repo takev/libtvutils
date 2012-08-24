@@ -5,7 +5,6 @@ import sys
 c_tvutils.tvu_init(sys.argv[0])
 
 time = c_tvutils.tvu_time
-cuid = c_tvutils.tvu_cuid
 random = c_tvutils.tvu_random
 service_socket = c_tvutils.tvu_service_socket
 service_client_bind = c_tvutils.tvu_service_client_bind
