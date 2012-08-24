@@ -73,7 +73,6 @@ library_include_HEADERS =\
 	daemon.h\
 	base64.h\
 	bsearch.h\
-	service.h\
 	random.h\
 	cuid.h
 

@@ -20,8 +20,8 @@
 
 int main(int argc __attribute__((unused)), char *argv[])
 {
-    tvu_cuid    r;
-    tvu_cuid    prev_r;
+    tvu_cuid_t   r;
+    tvu_cuid_t   prev_r;
     int         i;
 
     TVU_UNITTEST_INIT
@@ -30,7 +30,7 @@ int main(int argc __attribute__((unused)), char *argv[])
     // Loop 16 times to the buffer.
     prev_r = tvu_random();
     for (i = 0; i < 0x10000; i++) {
-        r = tvu_get_cuid();
+        r = tvu_cuid();
         TVU_UNITTEST_NOT_CMP(r, prev_r)
         prev_r = r;
     }
