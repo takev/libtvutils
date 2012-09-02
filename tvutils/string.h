@@ -22,10 +22,28 @@
 #include <alloca.h>
 #include <stdlib.h>
 #include <tvutils/types.h>
+#include <tvutils/compiler.h>
 
 /** String dupplicate with string on the stack.
  */
 #define tvu_strdupa(src)    strcpy(alloca(strlen(src) + 1), src)
+
+/** Copy n bytes from memory area s2 to memory area s1.
+ * When s2 is not null, see behaviour of memcpy.
+ * When s1 is null, see behavour of memset() with c = 0.
+ *
+ * @param s1    Destination memory area.
+ * @param s2    Source memory area, this may be NULL unlike normal memcpy().
+ * @param n     Number of bytes to copy.
+ */
+static inline void *tvu_memcpy_null(void * restrict s1, void const * restrict s2, size_t n)
+{
+    if (likely(s2 != NULL)) {
+        return memcpy(s1, s2, n);
+    } else {
+        return memset(s1, 0, n);
+    }
+}
 
 /** Count a character in a string.
  * @param haystack  The string to search in.
