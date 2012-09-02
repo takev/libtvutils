@@ -67,7 +67,7 @@ foreach ($bit_sizes as $bit_size) {
  * @param buffer    The memory location where the <?=$__endian?> <?=$__sign?> integer is located.
  * @returns         An host native <?=$bit_size?>-bit <?=$__sign?> integer.
  */
-static inline <?=$_sign?>int<?=$bit_size?>_t tvu_get_<?=$endian?>_<?=$sign?><?=$bit_size?>(uint8_t * restrict buffer)
+static inline <?=$_sign?>int<?=$bit_size?>_t tvu_get_<?=$endian?>_<?=$sign?><?=$bit_size?>(uint8_t const * restrict buffer)
 {
 #ifdef TVU_ALIGNED_ACCESS
     union<?=$bit_size?>_t conv;
@@ -118,7 +118,7 @@ foreach ($bit_sizes as $bit_size) {
  * @param buffer    The memory location where the <?=$__endian?> float is located.
  * @returns         An host native <?=$bit_size?>-bit float.
  */
-static inline float<?=$bit_size?>_t tvu_get_<?=$endian?>_f<?=$bit_size?>(uint8_t * restrict buffer)
+static inline float<?=$bit_size?>_t tvu_get_<?=$endian?>_f<?=$bit_size?>(uint8_t const * restrict buffer)
 {
     union<?=$bit_size?>_t conv;
 
