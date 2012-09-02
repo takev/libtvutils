@@ -19,6 +19,7 @@
 
 #include <stddef.h>
 #include <stdio.h>
+#include <tvutils/hash.h>
 
 /** The permanent hash table.
  * Allocation of the hash table is up to the user.
@@ -35,12 +36,8 @@
  * The hash table can't grow or shrink.
  */
 typedef struct {
-    uint64_t    lock;           //< Index of where the data is free to be used by the producer again.
-    uint64_t    size;           //< The number of bytes the array data is.
-    uint8_t     key_value_size; //< Size of keys and value appended to each other, stored in the hash table. Must be multiple of 8.
-    uint8_t     _padding1;
-    uint16_t    _padding2;
-    uint32_t    _padding3;
+    uint32_t    entry_size;     //< Size of each entry, including header.
+    uint32_t    nr_entries;     //< Nr of entries in the table.
     uint8_t     data[];         //< The data array. Aligned to 64 bits, all entries are aligned to 64 bits.
 } tvu_permhashtable_t;
 
@@ -52,11 +49,9 @@ typedef struct {
  * The data is completely user defined.
  */
 typedef struct {
-    uint8_t     value_size;     //< Value size, 0 means entry is not in use.
-    uint8_t     key_size;       //< Key size, 0 means entry is busy.
-    uint16_t    _padding2;
-    uint32_t    _padding3;
-    uint64_t    hash;           //< Hash value for this entry.
+    uint32_t    value_size;     //< Value size, 0 means entry is not in use.
+    uint32_t    key_size;       //< Key size, 0 means entry is busy.
+    tvu_hash_t  hash;           //< Hash value for this entry.
     uint8_t     value[];        //< value first, followed by key. Value is first so that it is aligned to 64 bits.
 } tvu_permhashtable_entry_t;
 
@@ -68,14 +63,6 @@ static inline size_t tvu_permhashtable_entry_hdrsize(void)
     return offsetof(tvu_permhashtable_entry_t, value);
 }
 
-/** Return the size of the header of a ringpacket.
- * @returns size of a tvu_ringpacket_t header.
- */
-static inline size_t tvu_permhashtable_entry_size(tvu_permhashtable_t *table)
-{
-    return tvu_permhashtable_entry_hdrsize() + table->key_value_size;
-}
-
 /** Return the a pointer to the key in an entry.
  * @param entry     The hash table entry.
  * @returns         The key in the hash table entry.
@@ -83,6 +70,16 @@ static inline size_t tvu_permhashtable_entry_size(tvu_permhashtable_t *table)
 static inline uint8_t *tvu_permhashtable_entry_key(tvu_permhashtable_entry_t *entry)
 {
     return &entry->value[entry->value_size];
+}
+
+/** Wait until this hash table entry is written by another thread.
+ * @param entry     The hash table entry.
+ */
+static inline void tvu_permhashtable_entry_wait(tvu_permhashtable_entry_t *entry)
+{
+    while (tvu_atomic_read_u32(&entry->key_size) == 0) {
+        tvu_atomic_pause();
+    }
 }
 
 /** Write all the data in the hash table entry.
@@ -96,8 +93,54 @@ static inline uint8_t *tvu_permhashtable_entry_key(tvu_permhashtable_entry_t *en
  * @param key_size      The size of the key.
  * @param value         The value of the entry.
  * @param value_size    The value size.
- * @returns             True when the entry was written. False if another thread has beat us to it.
+ * @returns             TVU_FIND_NEXT if the entry does not match the key, TVU_FIND_FOUND if the entry matched key and value, TVU_FIND_END if the entries value does not match.
  */
-bool tvu_permhashtable_entry_write(tvu_permhashtable_entry_t *entry, uint64_t hash, uint8_t const * restrict key, uint8_t key_size, uint8_t const * restrict value, uint8_t value_size);
+tvu_find_t tvu_permhashtable_entry_write(tvu_permhashtable_entry_t * restrict entry, tvu_hash_t hash, uint8_t const * restrict key, tvu_int key_size, uint8_t const * restrict value, tvu_int value_size);
+
+
+/** Check the data in the hash table entry.
+ * The order of reads, and handling of contention is important.
+ * When an entry is contented, the function skips the entry, to look for the next, this function is wait-free.
+ *
+ * @param entry         The entry to update.
+ * @param hash          The hash value.
+ * @param key           The key for the entry.
+ * @param key_size      The size of the key.
+ * @returns             TVU_FIND_NEXT if the entry does not match the key, TVU_FIND_FOUND if the entry does match the key, TVU_FIND_END if the entry is empty.
+ */
+tvu_find_t tvu_permhashtable_entry_read(tvu_permhashtable_entry_t * restrict entry, tvu_hash_t hash, uint8_t const * restrict key, tvu_int key_size);
+
+
+/** Delete a hash table entry.
+ * The hash table entry is stomped over with a tombstone.
+ * Any reading process should first read the hash entry; all other entries should remain valid for read during contention.
+ * This entry is deleted entry is never reclaimed.
+ */
+void tvu_permhashtable_entry_delete(tvu_permhashtable_entry_t * restrict entry)
+{
+    tvu_atomic_write_u64(&entry->hash, TVU_HASH_TOMB);
+}
+
+/** Get a hash table entry.
+ * @param table     Hash table.
+ * @param i         Index in the hash table.
+ * @returns         Pointer to a hash table entry.
+ */
+static inline tvu_permhashtable_entry_t *tvu_permhashtable_get_entry(tvu_permhashtable_t const * restrict table, tvu_int i)
+{
+    return (tvu_permhashtable_entry_t *)&table->data[i * table->entry_size];
+}
+
+/** Set an entry in the hash table.
+ *
+ * @param table         Hash table.
+ * @param hash          Hash value.
+ * @param key           The key the entry should be saved under.
+ * @param key_size      Size of the key.
+ * @param value         The value that should be saved.
+ * @param value_size    The size of the value.
+ * @returns             The entry where the value was saved, NULL if the key was already set with a different value.
+ */
+tvu_permhashtable_entry_t *tvu_parmhashtable_set(tvu_permhashtable_t * restrict table, tvu_hash_t hash, uint8_t const * restrict key, uint8_t key_size, uint8_t const * restrict value, uint8_t value_size);
 
 #endif
