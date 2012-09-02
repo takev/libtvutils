@@ -12,7 +12,7 @@ pkgpython_LTLIBRARIES = _tvutils.la
 _tvutils_la_SOURCES = tvutils_wrap.c $(SWIG_SOURCES)
 _tvutils_la_CFLAGS = $(AX_SWIG_PYTHON_CPPFLAGS) $(AM_CFLAGS)
 _tvutils_la_LDFLAGS = -module
-_tvutils_la_LIBADD = ../tvutils/libtvutils.la
+_tvutils_la_LIBADD = $(top_builddir)/tvutils/libtvutils.la
 
 tvutils_wrap.c: $(SWIG_SOURCES)
 	$(SWIG) $(AX_SWIG_PYTHON_OPT) -o $@ $<
