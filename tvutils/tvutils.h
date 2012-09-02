@@ -77,5 +77,7 @@
 #include <tvutils/daemon.h>
 #include <tvutils/base64.h>
 #include <tvutils/random.h>
+#include <tvutils/hash.h>
+#include <tvutils/permhashtable.h>
 
 #endif
