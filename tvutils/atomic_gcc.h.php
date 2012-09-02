@@ -38,6 +38,15 @@ static inline void tvu_atomic_write_barrier(void)
     __sync_synchronize();
 }
 
+/** Tell the CPU to wait for a really short time.
+ * It tells the CPU that we are spin locking; it can schedule other
+ * hyper threads and memory access. Like yield, but faster.
+ */
+static inline void tvu_atomic_pause(void)
+{
+    //__builtin_ia32_pause();
+}
+
 <?php
 $bit_sizes = array(8, 16, 32, 64);
 $signs = array("i", "u");
