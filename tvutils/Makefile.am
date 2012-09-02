@@ -1,7 +1,8 @@
 
 DEFAULT_INCLUDES=-I$(top_srcdir)
 
-AM_CFLAGS = -fstrict-aliasing -O3 -Wall -W -Werror -Wstrict-aliasing=2 -pedantic -Wno-sign-compare -Wno-long-long -Wno-unused -std=gnu99 $(DEPS_CFLAGS) $(DEFAULT_INCLUDES)
+MACHINE_FLAGS = -mmmx -msse -msse2 -msse3
+AM_CFLAGS = $(MACHINE_FLAGS) -fstrict-aliasing -O3 -Wall -W -Werror -Wstrict-aliasing=2 -pedantic -Wno-sign-compare -Wno-long-long -Wno-unused -std=gnu99 $(DEPS_CFLAGS) $(DEFAULT_INCLUDES)
 
 #dist_man3_MANS = uniq_init.3 uniq_time.3 uniq_tipc_node.3 uniq_tipc_cuid.3
 
@@ -9,27 +10,30 @@ AM_CFLAGS = -fstrict-aliasing -O3 -Wall -W -Werror -Wstrict-aliasing=2 -pedantic
 lib_LTLIBRARIES = libtvutils.la
 
 libtvutils_la_LDFLAGS = -version-info $(SHARED_VERSION_INFO)
-libtvutils_la_SOURCES = common.c path.c daemon.c string.c time.c base64.c random.c
+libtvutils_la_SOURCES = common.c path.c daemon.c string.c time.c base64.c random.c hash.c
 libtvutils_la_LIBADD = $(LIBS)
 
-check_PROGRAMS = bsearch_test ringbuffer_test dynarg_test time_test random_test
+check_PROGRAMS = bsearch_test ringbuffer_test dynarg_test time_test random_test hash_test
+TESTS = bsearch_test ringbuffer_test dynarg_test time_test random_test hash_test
 
 bsearch_test_SOURCES = bsearch_test.c
-bsearch_test_LDADD = -ltvutils
+bsearch_test_LDADD = $(top_builddir)/tvutils/libtvutils.la
 
 ringbuffer_test_SOURCES = ringbuffer_test.c
-ringbuffer_test_LDADD = -ltvutils
+ringbuffer_test_LDADD = $(top_builddir)/tvutils/libtvutils.la
 
 dynarg_test_SOURCES = dynarg_test.c
-dynarg_test_LDADD = -ltvutils
+dynarg_test_LDADD = $(top_builddir)/tvutils/libtvutils.la
 
 time_test_SOURCES = time_test.c
-time_test_LDADD = -ltvutils
+time_test_LDADD = $(top_builddir)/tvutils/libtvutils.la
 
 random_test_SOURCES = random_test.c
-random_test_LDADD = -ltvutils
+random_test_LDADD = $(top_builddir)/tvutils/libtvutils.la
 
-TESTS = bsearch_test ringbuffer_test dynarg_test time_test random_test
+hash_test_SOURCES = hash_test.c
+hash_test_LDADD = $(top_builddir)/tvutils/libtvutils.la
+
 
 EXTRA_DIST=\
 	memory_access.h.php\
@@ -70,7 +74,8 @@ library_include_HEADERS =\
 	daemon.h\
 	base64.h\
 	bsearch.h\
-	random.h
+	random.h\
+	hash.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = tvutils.pc
