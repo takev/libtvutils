@@ -17,6 +17,7 @@
 #ifndef TVU_HASH_H
 #define TVU_HASH_H
 
+#include <string.h>
 #include <tvutils/types.h>
 
 typedef uint64_t tvu_hash_t;                //< Zero is not allowed in the hash.
@@ -39,6 +40,18 @@ typedef uint64_t tvu_hash_t;                //< Zero is not allowed in the hash.
  * @returns         The hash value of the key, will never be TVU_HASH_NULL or TVU_HASH_TOMB.
  */
 tvu_hash_t tvu_hash(uint8_t const * restrict key, tvu_int key_size);
+
+/** Construct a hash value from a key.
+ * This function handles 64 bits at a time and is based on MurmurHash64A.
+ * It has a slight modification so it will never return TVU_HASH_NULL or TVU_HASH_TOMB.
+ *
+ * @param key       The null terminated key to hash.
+ * @returns         The hash value of the key, will never be TVU_HASH_NULL or TVU_HASH_TOMB.
+ */
+static inline tvu_hash_t tvu_hash_string(utf8_t const * restrict key)
+{
+    return tvu_hash((uint8_t const *)key, strlen(key));
+}
 
 /** Extract an index from the hash value.
  * @param hash          The hash value
