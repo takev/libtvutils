@@ -10,7 +10,7 @@ AM_CFLAGS = $(MACHINE_FLAGS) -fstrict-aliasing -O3 -Wall -W -Werror -Wstrict-ali
 lib_LTLIBRARIES = libtvutils.la
 
 libtvutils_la_LDFLAGS = -version-info $(SHARED_VERSION_INFO)
-libtvutils_la_SOURCES = common.c path.c daemon.c string.c time.c base64.c random.c hash.c
+libtvutils_la_SOURCES = common.c path.c daemon.c string.c time.c base64.c random.c hash.c permhashtable.c
 libtvutils_la_LIBADD = $(LIBS)
 
 check_PROGRAMS = bsearch_test ringbuffer_test dynarg_test time_test random_test hash_test
