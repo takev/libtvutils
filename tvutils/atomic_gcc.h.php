@@ -71,6 +71,19 @@ static inline <?=$ctype?> tvu_atomic_read_<?=$tvutype?>(volatile <?=$ctype?> *pt
     return x;
 }
 
+/** Atomic <?=$__sign?> <?=$bit_size?>-bit integer write.
+ * Before the write a full memory barrier is executed.
+ *
+ * @param ptr   Pointer to a <?=$bit_size?> bit integer.
+ * @param x     The <?=$bit_size?> bit integer to be written
+ * @returns     The <?=$bit_size?> bit integer written to ptr.
+ */
+static inline <?=$ctype?> tvu_atomic_write_<?=$tvutype?>(volatile <?=$ctype?> *ptr, <?=$ctype?> x)
+{
+    __sync_synchronize();
+    return *ptr = x;
+}
+
 /** Atomic add then read a <?=$__sign?> <?=$bit_size?>-bit integer.
  * First the add is done into memory, then the result is returned. With
  * a full memory barrier.
