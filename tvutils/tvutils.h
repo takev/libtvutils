@@ -63,6 +63,7 @@
 #include <tvutils/path.h>
 #include <tvutils/target.h>
 #include <tvutils/compiler.h>
+#include <tvutils/assert.h>
 #include <tvutils/macros.h>
 #include <tvutils/buffer.h>
 #include <tvutils/time.h>
