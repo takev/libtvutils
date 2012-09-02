@@ -37,4 +37,12 @@ typedef int64_t     tvu_int;
  */
 typedef char        utf8_t;
 
+/** Result of iterative find function.
+ */
+typedef enum {
+    TVU_FIND_NEXT,
+    TVU_FIND_FOUND,
+    TVU_FIND_END
+} tvu_find_t;
+
 #endif
