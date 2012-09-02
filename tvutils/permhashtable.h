@@ -19,7 +19,9 @@
 
 #include <stddef.h>
 #include <stdio.h>
+#include <errno.h>
 #include <tvutils/hash.h>
+#include <tvutils/number.h>
 
 /** The permanent hash table.
  * Allocation of the hash table is up to the user.
@@ -61,6 +63,67 @@ typedef struct {
 static inline size_t tvu_permhashtable_entry_hdrsize(void)
 {
     return offsetof(tvu_permhashtable_entry_t, value);
+}
+
+/** Return the size of the header of a hash table.
+ * @returns size of a tvu_permhashtable_t header.
+ */
+static inline size_t tvu_permhashtable_hdrsize(void)
+{
+    return offsetof(tvu_permhashtable_t, data);
+}
+
+/** Calculate the size of an entry.
+ * @param max_key_size      Maximum size of a key.
+ * @param max_value_size    Maximum size of a value.
+ * @returns                 Size of an entry, rounded-up to 64 bits.
+ */
+static inline size_t tvu_permhashtable_entry_size(size_t max_key_size, size_t max_value_size)
+{
+    return tvu_round_up_u64(max_key_size + max_value_size + tvu_permhashtable_entry_hdrsize(), sizeof (uint64_t));
+}
+
+/** Check if the hash table is initialized.
+ * @param self              Pointer to a (un)initialized hash table.
+ * @param size              Memory size of the hash table.
+ * @param max_key_size      Maximum size of a key.
+ * @param max_value_size    Maximum size of a value.
+ * @returns     true if initialized, false if not.
+ */
+static inline bool tvu_permhashtable_is_initialized(tvu_permhashtable_t *table, size_t size, size_t max_key_size, size_t max_value_size)
+{
+    uint32_t entry_size = tvu_permhashtable_entry_size(max_key_size, max_value_size);
+    if (table->entry_size != entry_size) {
+        return false;
+    }
+
+    uint32_t nr_entries = (size - tvu_permhashtable_hdrsize()) / entry_size;
+    if (table->nr_entries != nr_entries) {
+        return false;
+    }
+    return true;
+}
+
+/** Initialize the ring buffer.
+ * @param self              Pointer to a uninitialized and zeroed out hash table.
+ * @param size              Memory size of the hash table.
+ * @param max_key_size      Maximum size of a key.
+ * @param max_value_size    Maximum size of a value.
+ * @return                  0 if ok, -1 on error.
+ */
+static inline tvu_int tvu_permhashtable_init(tvu_permhashtable_t *table, size_t size, size_t max_key_size, size_t max_value_size)
+{
+    uint32_t entry_size = tvu_permhashtable_entry_size(max_key_size, max_value_size);
+    uint32_t nr_entries = (size - tvu_permhashtable_hdrsize()) / entry_size;
+
+    if (nr_entries < 1) {
+        errno = EINVAL;
+        return -1;
+    }
+
+    table->entry_size = entry_size;
+    table->nr_entries = nr_entries;
+    return 0;
 }
 
 /** Return the a pointer to the key in an entry.
