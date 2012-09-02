@@ -36,6 +36,16 @@
         return 1;\
     }
 
+#define TVU_UNITTEST_UCMP(a, b)\
+    if (a != b) {\
+        fprintf(stderr, "----------------\n");\
+        fprintf(stderr, "Subtest failed at %s:%i.\n", __FILE__, __LINE__);\
+        fprintf(stderr, "Expected: %llu\n", (unsigned long long)b);\
+        fprintf(stderr, "Got:      %llu\n", (unsigned long long)a);\
+        fprintf(stderr, "----------------\n");\
+        return 1;\
+    }
+
 #define TVU_UNITTEST_NOT_CMP(a, b)\
     if (a == b) {\
         fprintf(stderr, "----------------\n");\
