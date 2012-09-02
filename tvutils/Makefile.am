@@ -52,6 +52,7 @@ library_include_HEADERS =\
 	tvutils.h\
 	target.h\
 	common.h\
+	assert.h\
 	path.h\
 	buffer.h\
 	target.h\
