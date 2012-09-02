@@ -190,7 +190,7 @@ static inline bool tvu_ring_is_initialized(tvu_ringbuffer_t *self, size_t size)
 }
 
 /** Initialize the ring buffer.
- * @param self  A pointer to an unitialized ring buffer.
+ * @param self  A pointer to an unitialized and zeroed out ring buffer.
  * @param size  The size of memory allocated for the ring buffer;
  *              not the size of the ring buffer itself.
  * @return      0 if ok, -1 on error.
