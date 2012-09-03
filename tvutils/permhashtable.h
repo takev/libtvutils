@@ -204,6 +204,36 @@ static inline tvu_permhashtable_entry_t *tvu_permhashtable_get_entry(tvu_permhas
  * @param value_size    The size of the value.
  * @returns             The entry where the value was saved, NULL if the key was already set with a different value.
  */
-tvu_permhashtable_entry_t *tvu_parmhashtable_set(tvu_permhashtable_t * restrict table, tvu_hash_t hash, uint8_t const * restrict key, uint8_t key_size, uint8_t const * restrict value, uint8_t value_size);
+tvu_permhashtable_entry_t *tvu_permhashtable_set(tvu_permhashtable_t * restrict table, tvu_hash_t hash, uint8_t const * restrict key, uint8_t key_size, uint8_t const * restrict value, uint8_t value_size);
+
+tvu_permhashtable_entry_t *tvu_permhashtable_get(tvu_permhashtable_t const * restrict table, tvu_hash_t hash, uint8_t const * restrict key, uint8_t key_size);
+
+
+/** Set an entry in the hash table.
+ *
+ * @param table         Hash table.
+ * @param key           The key the entry should be saved under.
+ * @param value         The value that should be saved.
+ * @returns             The entry where the value was saved, NULL if the key was already set with a different value.
+ */
+static inline utf8_t const *tvu_permhashtable_set_s_s(tvu_permhashtable_t * restrict table, utf8_t const * restrict key, utf8_t const * restrict value)
+{
+    tvu_int                     key_size   = strlen(key);
+    tvu_int                     value_size = strlen(value) + 1; // Add null termination to the value, so it can be easily returned.
+    tvu_hash_t                  hash       = tvu_hash((uint8_t const *)key, key_size);
+    tvu_permhashtable_entry_t   *entry     = tvu_permhashtable_set(table, hash, (uint8_t const *)key, key_size, (uint8_t const *)value, value_size);
+
+    return (utf8_t const *)(entry ? entry->value : NULL);
+}
+
+
+static inline utf8_t const *tvu_permhashtable_get_s_s(tvu_permhashtable_t const * restrict table, utf8_t const * restrict key)
+{
+    tvu_int                     key_size = strlen(key);
+    tvu_hash_t                  hash     = tvu_hash((uint8_t const *)key, key_size);
+    tvu_permhashtable_entry_t   *entry   = tvu_permhashtable_get(table, hash, (uint8_t const *)key, key_size);
+
+    return (utf8_t const *)(entry ? entry->value : NULL);
+}
 
 #endif

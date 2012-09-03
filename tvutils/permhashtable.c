@@ -91,7 +91,7 @@ tvu_find_t tvu_permhashtable_entry_read(tvu_permhashtable_entry_t * restrict ent
 }
 
 
-tvu_permhashtable_entry_t *tvu_parmhashtable_set(tvu_permhashtable_t * restrict table, tvu_hash_t hash, uint8_t const * restrict key, uint8_t key_size, uint8_t const * restrict value, uint8_t value_size)
+tvu_permhashtable_entry_t *tvu_permhashtable_set(tvu_permhashtable_t * restrict table, tvu_hash_t hash, uint8_t const * restrict key, uint8_t key_size, uint8_t const * restrict value, uint8_t value_size)
 {
     TVU_ASSERT(table != NULL)
     TVU_ASSERT(key != NULL)
@@ -119,7 +119,7 @@ retry:
     }
 }
 
-tvu_permhashtable_entry_t *tvu_parmhashtable_get(tvu_permhashtable_t const * restrict table, tvu_hash_t hash, uint8_t const * restrict key, uint8_t key_size)
+tvu_permhashtable_entry_t *tvu_permhashtable_get(tvu_permhashtable_t const * restrict table, tvu_hash_t hash, uint8_t const * restrict key, uint8_t key_size)
 {
     TVU_ASSERT(table != NULL)
     TVU_ASSERT(key != NULL)
