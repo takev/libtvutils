@@ -229,121 +229,22 @@ static inline void tvu_ring_debug(tvu_ringbuffer_t *self)
  *
  * param self   The ring buffer.
  */
-static inline void tvu_ring_advance_free(tvu_ringbuffer_t *self)
-{
-    uint64_t            old_free;
-    uint64_t            old_tail;
-    uint64_t            new_free;
-    tvu_ringpacket_t    *packet;
-
-    for (;;) {
-        do {
-            old_free = tvu_atomic_read_u64(&self->free);
-            old_tail = tvu_atomic_read_u64(&self->tail);
-
-            if (old_free >= old_tail) {
-                goto last;
-            }
-
-            packet = (tvu_ringpacket_t *)&self->data[old_free];
-            if (!tvu_ringpacket_isfree(packet)) {
-                goto last;
-            }
-
-            new_free = old_free + tvu_ringpacket_pktsize(packet);
-
-        } while (!tvu_atomic_cas_u64(&self->free, old_free, new_free));
-    }
-last:
-    return;
-}
+void tvu_ring_advance_free(tvu_ringbuffer_t *self);
 
 /** Get a packet at the head.
  *
+ * @param self  The ring buffer
  * @param size  Number of bytes to reserve.
  * @returns     Packet.
  */
-static inline tvu_ringpacket_t *tvu_ring_head(tvu_ringbuffer_t *self, size_t size)
-{
-    uint64_t            old_head;
-    uint64_t            new_head;
-    uint64_t            old_free;
-    size_t              padded_size = tvu_round_up_u64(size, tvu_ringpacket_hdrsize()) + tvu_ringpacket_hdrsize();
-    size_t              size_at_end;
-    bool                need_empty_packet_at_end;
-    tvu_ringpacket_t    *packet;
+tvu_ringpacket_t *tvu_ring_head(tvu_ringbuffer_t *self, size_t size);
 
-    tvu_ring_advance_free(self);
-
-    do {
-        old_head = tvu_atomic_read_u64(&self->head);
-        old_free = tvu_atomic_read_u64(&self->free);
-
-        // Calculate where the new head is supposed to be.
-        size_at_end = self->size - (old_head % self->size);
-
-        need_empty_packet_at_end = padded_size > size_at_end;
-        new_head = old_head + padded_size + (need_empty_packet_at_end ? size_at_end : 0);
-
-        // Check if the head is progressed beyond the tail.
-        if (unlikely(new_head > (old_free + self->size))) {
-            errno = EAGAIN;
-            return NULL;
-        }
-    } while (!tvu_atomic_cas_u64(&self->head, old_head, new_head));
-
-    // Add a special end packet to the end of the ring.
-    if (need_empty_packet_at_end) {
-        packet = (tvu_ringpacket_t *)&self->data[old_head % self->size];
-        tvu_ringpacket_setlast(packet, size_at_end);
-        old_head+= size_at_end;
-    }
-
-    // Start the actual packet.
-    packet = (tvu_ringpacket_t *)&self->data[old_head % self->size];
-    tvu_ringpacket_setalloc(packet, size);
-    return packet;
-}
-
-static inline tvu_ringpacket_t *tvu_ring_tail(tvu_ringbuffer_t *self)
-{
-    uint64_t            old_tail;
-    uint64_t            new_tail;
-    uint64_t            old_head;
-    tvu_ringpacket_t    *packet;
-
-    tvu_ring_advance_free(self);
-
-again:
-    do {
-        old_tail = tvu_atomic_read_u64(&self->tail);
-        old_head = tvu_atomic_read_u64(&self->head);
-
-        if (old_head <= old_tail) {
-            errno = EAGAIN;
-            return NULL;
-        }
-
-        packet = (tvu_ringpacket_t *)&self->data[old_tail % self->size];
-        if (!tvu_ringpacket_isdata_or_last(packet)) {
-            errno = EAGAIN;
-            return NULL;
-        }
-
-        new_tail = old_tail + tvu_ringpacket_pktsize(packet);
-
-    } while (!tvu_atomic_cas_u64(&self->tail, old_tail, new_tail));
-
-    if (unlikely(tvu_ringpacket_islast(packet))) {
-        tvu_ringpacket_markfree(packet);
-        goto again;
-    }
-
-    tvu_ring_advance_free(self);
-
-    return packet;
-}
-
+/** Get the packet at the tail.
+ *
+ * @param self  The ring buffer
+ * @returns     Packet at end of the ring.
+ */
+tvu_ringpacket_t *tvu_ring_tail(tvu_ringbuffer_t *self);
 
 
 #endif
