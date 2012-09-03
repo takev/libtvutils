@@ -13,8 +13,8 @@ libtvutils_la_LDFLAGS = -version-info $(SHARED_VERSION_INFO)
 libtvutils_la_SOURCES = common.c path.c daemon.c string.c time.c base64.c random.c hash.c permhashtable.c
 libtvutils_la_LIBADD = $(LIBS)
 
-check_PROGRAMS = bsearch_test ringbuffer_test dynarg_test time_test random_test hash_test
-TESTS = bsearch_test ringbuffer_test dynarg_test time_test random_test hash_test
+check_PROGRAMS = bsearch_test ringbuffer_test dynarg_test time_test random_test hash_test permhashtable_test
+TESTS = bsearch_test ringbuffer_test dynarg_test time_test random_test hash_test permhashtable_test
 
 bsearch_test_SOURCES = bsearch_test.c
 bsearch_test_LDADD = $(top_builddir)/tvutils/libtvutils.la
@@ -33,6 +33,9 @@ random_test_LDADD = $(top_builddir)/tvutils/libtvutils.la
 
 hash_test_SOURCES = hash_test.c
 hash_test_LDADD = $(top_builddir)/tvutils/libtvutils.la
+
+permhashtable_test_SOURCES = permhashtable_test.c
+permhashtable_test_LDADD = $(top_builddir)/tvutils/libtvutils.la
 
 
 EXTRA_DIST=\
