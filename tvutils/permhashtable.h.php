@@ -236,4 +236,43 @@ static inline utf8_t const *tvu_permhashtable_get_s_s(tvu_permhashtable_t const 
     return (utf8_t const *)(entry ? entry->value : NULL);
 }
 
+<?php
+$bit_sizes = array(8, 16, 32, 64);
+$sizes = array(2, 4);
+$signs = array("i", "u");
+foreach ($bit_sizes as $bit_size) {
+    $nr_bytes = $bit_size / 8;
+    foreach ($signs as $sign) {
+        $_sign = $sign == "u" ? "u" : "";
+        $__sign = $sign == "u" ? "unsigned" : "signed";
+        $short_type = $sign . $bit_size;
+        $c_type = $_sign . "int" . $bit_size . "_t";
+?>
+/** Set an entry in the hash table.
+ *
+ * @param table         Hash table.
+ * @param key           The key the entry should be saved under.
+ * @param value         The value that should be saved.
+ * @returns             The entry where the value was saved, NULL if the key was already set with a different value.
+ */
+static inline <?=$c_type?> tvu_permhashtable_set_s_<?=$short_type?>(tvu_permhashtable_t * restrict table, utf8_t const * restrict key, <?=$c_type?> value)
+{
+    tvu_int                     key_size   = strlen(key);
+    tvu_hash_t                  hash       = tvu_hash((uint8_t const *)key, key_size);
+    tvu_permhashtable_entry_t   *entry     = tvu_permhashtable_set(table, hash, (uint8_t const *)key, key_size, (uint8_t const *)&value, sizeof (<?=$c_type?>));
+
+    return entry ? *(<?=$c_type?> *)entry->value : 0;
+}
+
+
+static inline <?=$c_type?> tvu_permhashtable_get_s_<?=$short_type?>(tvu_permhashtable_t const * restrict table, utf8_t const * restrict key)
+{
+    tvu_int                     key_size = strlen(key);
+    tvu_hash_t                  hash     = tvu_hash((uint8_t const *)key, key_size);
+    tvu_permhashtable_entry_t   *entry   = tvu_permhashtable_get(table, hash, (uint8_t const *)key, key_size);
+
+    return entry ? *(<?=$c_type?> *)entry->value : 0;
+}
+<?php }} ?>
+
 #endif

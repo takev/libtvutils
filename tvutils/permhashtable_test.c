@@ -23,6 +23,7 @@ tvu_permhashtable_t *table = (tvu_permhashtable_t *)buffer;
 int main(int argc __attribute__((unused)), char *argv[])
 {
     utf8_t const *result;
+    uint64_t result_u64;
 
     TVU_UNITTEST_INIT
     tvu_init(argv[0]);
@@ -42,6 +43,9 @@ int main(int argc __attribute__((unused)), char *argv[])
     TVU_UNITTEST_NOT_NULL(result)
     TVU_UNITTEST_STRCMP(result, "wereld")
 
+    result_u64 = tvu_permhashtable_set_s_u64(table, "hi", 12345678);
+    TVU_UNITTEST_CMP(result_u64, 12345678)
+
     result = tvu_permhashtable_set_s_s(table, "hallo", "world");
     TVU_UNITTEST_NULL(result)
 
@@ -56,6 +60,9 @@ int main(int argc __attribute__((unused)), char *argv[])
     result = tvu_permhashtable_get_s_s(table, "yo");
     TVU_UNITTEST_NULL(result)
     
+    result_u64 = tvu_permhashtable_get_s_u64(table, "hi");
+    TVU_UNITTEST_CMP(result_u64, 12345678)
+
 
     return 0;
 }

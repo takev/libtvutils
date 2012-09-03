@@ -42,13 +42,15 @@ EXTRA_DIST=\
 	memory_access.h.php\
 	endian.h.php\
 	atomic_gcc.h.php\
-	number.h.php
+	number.h.php\
+	permhashtable.h.php
 
 BUILT_SOURCES=\
 	memory_access.h\
 	endian.h\
 	atomic_gcc.h\
-	number.h
+	number.h\
+	permhashtable.h
 
 library_includedir=$(includedir)/tvutils-$(VERSION)/tvutils
 library_include_HEADERS =\
@@ -88,7 +90,8 @@ CLEANFILES=\
 	endian.h\
 	memory_acces.h\
 	atomic_gcc.h\
-	number.h
+	number.h\
+	permhashtable.h
 
 memory_access.h: memory_access.h.php
 	${PHP} $< >$@
@@ -100,5 +103,8 @@ atomic_gcc.h: atomic_gcc.h.php
 	${PHP} $< >$@
 
 number.h: number.h.php
+	${PHP} $< >$@
+
+permhashtable.h: permhashtable.h.php
 	${PHP} $< >$@
 
