@@ -18,6 +18,7 @@
 #define TVU_NUMBER_H
 
 #include <tvutils/macros.h>
+#include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
 #include <math.h>
