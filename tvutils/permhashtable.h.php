@@ -179,7 +179,7 @@ tvu_find_t tvu_permhashtable_entry_read(tvu_permhashtable_entry_t * restrict ent
  * Any reading process should first read the hash entry; all other entries should remain valid for read during contention.
  * This entry is deleted entry is never reclaimed.
  */
-void tvu_permhashtable_entry_delete(tvu_permhashtable_entry_t * restrict entry)
+static inline void tvu_permhashtable_entry_delete(tvu_permhashtable_entry_t * restrict entry)
 {
     tvu_atomic_write_u64(&entry->hash, TVU_HASH_TOMB);
 }
