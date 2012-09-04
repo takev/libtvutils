@@ -81,7 +81,8 @@ library_include_HEADERS =\
 	base64.h\
 	bsearch.h\
 	random.h\
-	hash.h
+	hash.h\
+	permhashtable.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = tvutils.pc
