@@ -22,6 +22,7 @@
 #include <stdint.h>
 #include <time.h>
 #include <tvutils/types.h>
+#include <tvutils/target.h>
 
 // 2012-01-01 with reference 1970-01-01 in seconds.
 #define TVU_TIME_EPOCH     1325376000ULL
@@ -35,20 +36,54 @@
  */
 typedef int64_t tvu_time_t;
 
-/** The time split up in seconds and nanoseconds.
- */
-typedef struct {
-    tvu_time_t  tv_sec;
+#ifndef TVU_HAVE_TIMESPEC
+typedef struct timespec {
+    tvu_int     tv_sec;
     tvu_int     tv_nsec;
-} tvu_timespec_t;
+};
+#endif
 
-static inline tvu_timespec_t tvu_to_timespec(tvu_time_t t)
+#ifndef TVU_HAVE_TIMEVAL
+typedef struct timeval {
+    tvu_int     tv_sec;
+    tvu_int     tv_usec;
+};
+#endif
+
+static inline struct timespec tvu_to_timespec(tvu_time_t t)
 {
-    tvu_timespec_t ts = {
+    struct timespec ts = {
         .tv_sec = t >> 32,
         .tv_nsec = (t << 32) / TVU_NS_TO_FRAC
     };
     return ts;
+}
+
+static inline struct timeval tvu_to_timeval(tvu_time_t t)
+{
+    struct timeval ts = {
+        .tv_sec = t >> 32,
+        .tv_usec = ((t << 32) / TVU_NS_TO_FRAC) / 1000
+    };
+    return ts;
+}
+
+static inline tvu_int tvu_to_ns(tvu_time_t t)
+{
+    struct timespec ts = tvu_to_timespec(t);
+    return (tvu_int)ts.tv_nsec + ((tvu_int)ts.tv_sec * 1000000000LL);
+}
+
+static inline tvu_int tvu_to_us(tvu_time_t t)
+{
+    struct timeval ts = tvu_to_timeval(t);
+    return (tvu_int)ts.tv_usec + ((tvu_int)ts.tv_sec * 1000000LL);
+}
+
+static inline tvu_int tvu_to_ms(tvu_time_t t)
+{
+    struct timeval ts = tvu_to_timeval(t);
+    return ((tvu_int)ts.tv_usec / 1000LL) + ((tvu_int)ts.tv_sec * 1000LL);
 }
 
 /** Number of hours since 2012-01-01.

@@ -13,4 +13,20 @@
 #define TVU_HAVE_TIPC
 #endif
 
+#if @TVU_HAVE_TIMESPEC@
+#define TVU_HAVE_TIMESPEC
+#endif
+
+#if @TVU_HAVE_TIMEVAL@
+#define TVU_HAVE_TIMEVAL
+#endif
+
+#if @TVU_HAVE_EPOLL@
+#define TVU_HAVE_EPOLL
+#endif
+
+#if @TVU_HAVE_KEVENT@
+#define TVU_HAVE_KEVENT
+#endif
+
 #endif

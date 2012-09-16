@@ -22,7 +22,7 @@
 
 tvu_int tvu_strftime_utc(utf8_t * restrict s, tvu_int maxsize, const utf8_t *restrict _format, tvu_time_t t)
 {
-    tvu_timespec_t  ts = tvu_to_timespec(t);
+    struct timespec ts = tvu_to_timespec(t);
     struct tm       time_tuple = tvu_to_tm_utc(t);
     tvu_int         format_len = strlen(_format);
     utf8_t          *format = tvu_strdupa(_format);
@@ -44,7 +44,7 @@ tvu_int tvu_strftime_utc(utf8_t * restrict s, tvu_int maxsize, const utf8_t *res
 
     if (format_has_nanosecond) {
         // s_offset can never be larger than maxsize, so at least 0 bytes are left.
-        s_offset += snprintf(&s[s_offset], maxsize - s_offset, "%09lli", ts.tv_nsec);
+        s_offset += snprintf(&s[s_offset], maxsize - s_offset, "%09li", (long)ts.tv_nsec);
     }
     return s_offset;
 }

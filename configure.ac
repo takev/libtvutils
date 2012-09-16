@@ -65,6 +65,29 @@ AC_CHECK_HEADER(
     AC_SUBST([TVU_HAVE_TIPC], [0])
 )
 
+AC_CHECK_HEADER(
+    [time.h],
+    AC_SUBST([TVU_HAVE_TIMESPEC], [1]),
+    AC_SUBST([TVU_HAVE_TIMESPEC], [0])
+)
+
+AC_CHECK_HEADER(
+    [time.h],
+    AC_SUBST([TVU_HAVE_TIMEVAL], [1]),
+    AC_SUBST([TVU_HAVE_TIMEVAL], [0])
+)
+
+AC_CHECK_HEADER(
+    [sys/event.h],
+    AC_SUBST([TVU_HAVE_KEVENT], [1]),
+    AC_SUBST([TVU_HAVE_KEVENT], [0])
+)
+
+AC_CHECK_HEADER(
+    [sys/epoll.h],
+    AC_SUBST([TVU_HAVE_EPOLL], [1]),
+    AC_SUBST([TVU_HAVE_EPOLL], [0])
+)
 
 AC_CONFIG_HEADERS([tvutils/config.h])
 AC_CONFIG_FILES([Makefile tvutils/Makefile tvutils/tvutils.pc tvutils/target.h pyext/Makefile])
