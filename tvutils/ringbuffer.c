@@ -34,7 +34,7 @@ void tvu_ring_advance_free(tvu_ringbuffer_t *self)
                 goto last;
             }
 
-            packet = (tvu_ringpacket_t *)&self->data[old_free];
+            packet = (tvu_ringpacket_t *)&self->data[old_free % self->size];
             if (!tvu_ringpacket_isfree(packet)) {
                 goto last;
             }
