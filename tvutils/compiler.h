@@ -20,5 +20,7 @@
 
 #define likely(x)   __builtin_expect((x), 1)
 #define unlikely(x) __builtin_expect((x), 0)
+#define lengthof(x) (sizeof(x) / sizeof(*(x)))
+#define bitsof(x)   (sizeof(x) * 8)
 
 #endif

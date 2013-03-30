@@ -29,6 +29,41 @@
  */
 #define tvu_strdupa(src)    strcpy(alloca(strlen(src) + 1), src)
 
+/** Convert a Hexadecimal character into a nibble.
+ * @param   c hexadecimal character.
+ * @return  0-15 decoded character.
+ *          -1 when no character decoded.
+ *          -2 when null found.
+ */
+static inline tvu_int tvu_hex2nibble(utf8_t c)
+{
+    if (c >= '0' && c <= '9') {
+        return c - '0';
+    } else if (c >= 'a' && c <= 'f') {
+        return c - 'a' + 0xa;
+    } else if (c >= 'A' && c <= 'F') {
+        return c - 'A' + 0xA;
+    } else if (c == 0) {
+        return -2;
+    } else {
+        return -1;
+    }
+}
+
+/** Convert a nibble to a hex character.
+ * @param   x value between 0 to 15.
+ * @return  A hex digit
+ */
+static inline tvu_int tvu_nibble2hex(utf8_t x)
+{
+    if (x <= 9) {
+        return '0' + x;
+    } else {
+        return 'a' + x - 10;
+    }
+}
+
+
 /** Copy n bytes from memory area s2 to memory area s1.
  * When s2 is not null, see behaviour of memcpy.
  * When s1 is null, see behavour of memset() with c = 0.
@@ -70,5 +105,12 @@ static inline size_t tvu_count_character(utf8_t const * restrict haystack, utf8_
  * @param ...   Parameters to format.
  */
 void tvu_perror(utf8_t const * restrict fmt, ...) __attribute ((format (printf, 1, 0)));
+
+/** Display the data to a void pointer.
+ * @param _src  Pointer to data.
+ * @param src_size  Nr of byte of data.
+ * @return      malloc-ed string.
+ */
+utf8_t *tvu_voidp2hex(void *_src, size_t src_size);
 
 #endif

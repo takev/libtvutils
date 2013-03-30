@@ -20,23 +20,26 @@
 
 #include <stdint.h>
 
-typedef float       float32_t;
-typedef double      float64_t;
-typedef long double float80_t;
+typedef unsigned int    uint128_t __attribute__((mode(TI)));
+typedef int             int128_t __attribute__((mode(TI)));
+
+typedef float           float32_t;
+typedef double          float64_t;
+typedef long double     float80_t;
 
 /** Standard float type.
  * Use this type anywhere you need a non specific sized float.
  */
-typedef float64_t   tvu_float;
+typedef float64_t       tvu_float;
 
 /** Standard int type.
  * Use this type anywhere you need a non specific sized int.
  */
-typedef int64_t     tvu_int;
+typedef int64_t         tvu_int;
 
 /** Standard UTF-t string type.
  */
-typedef char        utf8_t;
+typedef char            utf8_t;
 
 /** Result of iterative find function.
  */
@@ -45,5 +48,22 @@ typedef enum {
     TVU_FIND_FOUND,
     TVU_FIND_END
 } tvu_find_t;
+
+typedef int8_t  int1x16_t __attribute__((__vector_size__(16)));
+typedef int16_t int16x8_t __attribute__((__vector_size__(16)));
+typedef int32_t int32x4_t __attribute__((__vector_size__(16)));
+typedef int64_t int64x2_t __attribute__((__vector_size__(16)));
+
+typedef struct {
+    int64x2_t   v[8];
+} int64x2x8_t;
+
+typedef struct {
+    int64x2_t   v[11];
+} int64x2x11_t;
+
+typedef struct {
+    uint64_t   v[32];
+} uint2048_t;
 
 #endif

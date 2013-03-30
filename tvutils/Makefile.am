@@ -1,7 +1,7 @@
 
 DEFAULT_INCLUDES=-I$(top_srcdir)
 
-MACHINE_FLAGS = -mmmx -msse -msse2 -msse3
+MACHINE_FLAGS = -mmmx -msse -msse2 -msse3 -msse4 -maes -mrdrnd
 AM_CFLAGS = $(MACHINE_FLAGS) -fstrict-aliasing -O3 -Wall -W -Werror -Wstrict-aliasing=2 -pedantic -Wno-sign-compare -Wno-long-long -Wno-unused -std=gnu99 $(DEPS_CFLAGS) $(DEFAULT_INCLUDES)
 
 #dist_man3_MANS = uniq_init.3 uniq_time.3 uniq_tipc_node.3 uniq_tipc_cuid.3
@@ -10,11 +10,41 @@ AM_CFLAGS = $(MACHINE_FLAGS) -fstrict-aliasing -O3 -Wall -W -Werror -Wstrict-ali
 lib_LTLIBRARIES = libtvutils.la
 
 libtvutils_la_LDFLAGS = -version-info $(SHARED_VERSION_INFO)
-libtvutils_la_SOURCES = common.c path.c daemon.c string.c time.c base64.c random.c hash.c ringbuffer.c permhashtable.c iopoll.c
 libtvutils_la_LIBADD = $(LIBS)
+libtvutils_la_SOURCES =\
+	common.c\
+	path.c\
+	daemon.c\
+	string.c\
+	time.c\
+	base64.c\
+	random.c\
+	hash.c\
+	ringbuffer.c\
+	permhashtable.c\
+	iopoll.c\
+	aes.c\
+	bigint.c
 
-check_PROGRAMS = bsearch_test ringbuffer_test dynarg_test time_test random_test hash_test permhashtable_test
-TESTS = bsearch_test ringbuffer_test dynarg_test time_test random_test hash_test permhashtable_test
+check_PROGRAMS =\
+	bsearch_test\
+	ringbuffer_test\
+	dynarg_test\
+	time_test\
+	random_test\
+	hash_test\
+	permhashtable_test\
+	bigint_test
+
+TESTS =\
+	bsearch_test\
+	ringbuffer_test\
+	dynarg_test\
+	time_test\
+	random_test\
+	hash_test\
+	permhashtable_test\
+	bigint_test
 
 bsearch_test_SOURCES = bsearch_test.c
 bsearch_test_LDADD = $(top_builddir)/tvutils/libtvutils.la
@@ -37,20 +67,27 @@ hash_test_LDADD = $(top_builddir)/tvutils/libtvutils.la
 permhashtable_test_SOURCES = permhashtable_test.c
 permhashtable_test_LDADD = $(top_builddir)/tvutils/libtvutils.la
 
+bigint_test_SOURCES = bigint_test.c
+bigint_test_LDADD = $(top_builddir)/tvutils/libtvutils.la
+
 
 EXTRA_DIST=\
 	memory_access.h.php\
 	endian.h.php\
 	atomic_gcc.h.php\
 	number.h.php\
-	permhashtable.h.php
+	permhashtable.h.php\
+	bigint.h.php\
+	bigint.c.php
 
 BUILT_SOURCES=\
 	memory_access.h\
 	endian.h\
 	atomic_gcc.h\
 	number.h\
-	permhashtable.h
+	permhashtable.h\
+	bigint.h\
+	bigint.c
 
 library_includedir=$(includedir)/tvutils-$(VERSION)/tvutils
 library_include_HEADERS =\
@@ -79,6 +116,9 @@ library_include_HEADERS =\
 	unit_test.h\
 	daemon.h\
 	base64.h\
+	aes.h\
+	aes_x86ni.h\
+	aes_fallback.h\
 	bsearch.h\
 	random.h\
 	hash.h\
@@ -92,20 +132,28 @@ CLEANFILES=\
 	memory_acces.h\
 	atomic_gcc.h\
 	number.h\
-	permhashtable.h
+	permhashtable.h\
+	bigint.h\
+	bigint.c
 
 memory_access.h: memory_access.h.php
-	${PHP} $< >$@
+	${PHP} $< >$@ || (cat $@; rm $@; false)
 
 endian.h: endian.h.php
-	${PHP} $< >$@
+	${PHP} $< >$@ || (cat $@; rm $@; false)
 
 atomic_gcc.h: atomic_gcc.h.php
-	${PHP} $< >$@
+	${PHP} $< >$@ || (cat $@; rm $@; false)
 
 number.h: number.h.php
-	${PHP} $< >$@
+	${PHP} $< >$@ || (cat $@; rm $@; false)
 
 permhashtable.h: permhashtable.h.php
-	${PHP} $< >$@
+	${PHP} $< >$@ || (cat $@; rm $@; false)
+
+bigint.h: bigint.h.php
+	${PHP} $< >$@ || (cat $@; rm $@; false)
+
+bigint.c: bigint.c.php
+	${PHP} $< >$@ || (cat $@; rm $@; false)
 

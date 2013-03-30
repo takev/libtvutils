@@ -31,7 +31,7 @@ void tvu_random_load(void);
 
 
 #ifdef __RDRND__
-static inline utin64_t tvu_random(void)
+static inline uint64_t tvu_random(void)
 {
     uint64_t r;
     __builtin_ia32_rdrand64_step(&r);
@@ -51,5 +51,11 @@ static inline uint64_t tvu_random(void)
     return tvu_random_data[i];
 }
 #endif
+
+static inline int64x2_t tvu_random128(void)
+{
+    int64x2_t r = {tvu_random(), tvu_random()};
+    return r;
+}
 
 #endif

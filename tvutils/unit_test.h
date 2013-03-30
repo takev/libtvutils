@@ -24,19 +24,24 @@
 #define TVU_UNITTEST_INIT\
     char tvu_unittest_fmt[128];
 
-#define TVU_UNITTEST_MEMCMP(s1, s2, n)\
-    if (memcmp(s1, s2, n) != 0) {\
-        snprintf(tvu_unittest_fmt, 128, "Expected: '%%.%is'\nGot:      '%%.%is'\n", (int)n, (int)n);\
+#define TVU_UNITTEST_MEMCMP(d1, d2, n)\
+    if (memcmp(d1, d2, n) != 0) {\
+        utf8_t *s1 = tvu_voidp2hex(d1, n);\
+        utf8_t *s2 = tvu_voidp2hex(d2, n);\
         fprintf(stderr, "----------------\n");\
         fprintf(stderr, "Subtest failed at %s:%i.\n", __FILE__, __LINE__);\
-        fprintf(stderr, tvu_unittest_fmt, s2, s1);\
+        fprintf(stderr, "Expected: \n%s\n", s2);\
+        fprintf(stderr, "Got: \n%s\n", s1);\
         fprintf(stderr, "----------------\n");\
+        free(s1);\
+        free(s2);\
         return 1;\
     }
 
 #define TVU_UNITTEST_STRCMP(s1, s2)\
     if (strcmp(s1, s2) != 0) {\
         fprintf(stderr, "----------------\n");\
+        fprintf(stderr, "Subtest failed at %s:%i.\n", __FILE__, __LINE__);\
         fprintf(stderr, "Expected: '%s'\n", s2);\
         fprintf(stderr, "Got:      '%s'\n", s1);\
         fprintf(stderr, "----------------\n");\

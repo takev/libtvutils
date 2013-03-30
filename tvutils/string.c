@@ -22,6 +22,22 @@
 #include <string.h>
 #include <tvutils/string.h>
 
+utf8_t *tvu_voidp2hex(void *_src, size_t src_size)
+{
+    uint8_t *src = _src;
+    utf8_t  *dst = malloc(src_size * 2 + 1);
+    tvu_int i;
+    tvu_int j;
+
+    for (j = i = 0; i < src_size; i++) {
+        dst[j++] = tvu_nibble2hex(src[i] >> 4);
+        dst[j++] = tvu_nibble2hex(src[i] & 0xf);
+    }
+    dst[j] = 0;
+
+    return dst;
+}
+
 void tvu_perror(utf8_t const * restrict fmt, ...)
 {
     utf8_t  *tmp_s;

@@ -196,7 +196,7 @@ static inline tvu_int tvu_fmt_timestamp(utf8_t * restrict s, tvu_time_t t)
 #include <tvutils/time_bsd.h>
 
 #else
-#error "Could not find a time implemtation for this platfor."
+#error "Could not find a time implementation for this platform."
 #endif
 
 #undef TVU_TIME_H_IN

@@ -71,6 +71,7 @@
 #include <tvutils/atomic.h>
 #include <tvutils/dynarg.h>
 #include <tvutils/number.h>
+#include <tvutils/bigint.h>
 #include <tvutils/string.h>
 #include <tvutils/endian.h>
 #include <tvutils/memory_access.h>
@@ -82,5 +83,7 @@
 #include <tvutils/hash.h>
 #include <tvutils/permhashtable.h>
 #include <tvutils/iopoll.h>
+#include <tvutils/aes.h>
+#include <tvutils/bigint.h>
 
 #endif
