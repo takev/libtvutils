@@ -24,7 +24,7 @@ libtvutils_la_SOURCES =\
 	permhashtable.c\
 	iopoll.c\
 	aes.c\
-	bigint.c
+	varint.c
 
 check_PROGRAMS =\
 	bsearch_test\
@@ -34,7 +34,7 @@ check_PROGRAMS =\
 	random_test\
 	hash_test\
 	permhashtable_test\
-	bigint_test
+	varint_test
 
 TESTS =\
 	bsearch_test\
@@ -44,7 +44,7 @@ TESTS =\
 	random_test\
 	hash_test\
 	permhashtable_test\
-	bigint_test
+	varint_test
 
 bsearch_test_SOURCES = bsearch_test.c
 bsearch_test_LDADD = $(top_builddir)/tvutils/libtvutils.la
@@ -67,8 +67,8 @@ hash_test_LDADD = $(top_builddir)/tvutils/libtvutils.la
 permhashtable_test_SOURCES = permhashtable_test.c
 permhashtable_test_LDADD = $(top_builddir)/tvutils/libtvutils.la
 
-bigint_test_SOURCES = bigint_test.c
-bigint_test_LDADD = $(top_builddir)/tvutils/libtvutils.la
+varint_test_SOURCES = varint_test.c
+varint_test_LDADD = $(top_builddir)/tvutils/libtvutils.la
 
 
 EXTRA_DIST=\
@@ -76,18 +76,14 @@ EXTRA_DIST=\
 	endian.h.php\
 	atomic_gcc.h.php\
 	number.h.php\
-	permhashtable.h.php\
-	bigint.h.php\
-	bigint.c.php
+	permhashtable.h.php
 
 BUILT_SOURCES=\
 	memory_access.h\
 	endian.h\
 	atomic_gcc.h\
 	number.h\
-	permhashtable.h\
-	bigint.h\
-	bigint.c
+	permhashtable.h
 
 library_includedir=$(includedir)/tvutils-$(VERSION)/tvutils
 library_include_HEADERS =\
@@ -122,7 +118,9 @@ library_include_HEADERS =\
 	bsearch.h\
 	random.h\
 	hash.h\
-	permhashtable.h
+	permhashtable.h\
+	varint.h\
+	iopoll.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = tvutils.pc
@@ -132,9 +130,7 @@ CLEANFILES=\
 	memory_acces.h\
 	atomic_gcc.h\
 	number.h\
-	permhashtable.h\
-	bigint.h\
-	bigint.c
+	permhashtable.h
 
 memory_access.h: memory_access.h.php
 	${PHP} $< >$@ || (cat $@; rm $@; false)
@@ -149,11 +145,5 @@ number.h: number.h.php
 	${PHP} $< >$@ || (cat $@; rm $@; false)
 
 permhashtable.h: permhashtable.h.php
-	${PHP} $< >$@ || (cat $@; rm $@; false)
-
-bigint.h: bigint.h.php
-	${PHP} $< >$@ || (cat $@; rm $@; false)
-
-bigint.c: bigint.c.php
 	${PHP} $< >$@ || (cat $@; rm $@; false)
 

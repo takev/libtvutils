@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include <tvutils/macros.h>
+#include <tvutils/varint.h>
 
 #define TVU_UNITTEST_INIT\
     char tvu_unittest_fmt[128];
@@ -109,7 +110,19 @@
         return 1;\
     }
 
-
+#define TVU_UNITTEST_VARINTCMP(d1, d2)\
+    if (tvu_varint_cmp(d1, d2) != 0) {\
+        utf8_t *s1 = tvu_varint_to_hex(d1);\
+        utf8_t *s2 = tvu_varint_to_hex(d2);\
+        fprintf(stderr, "----------------\n");\
+        fprintf(stderr, "Subtest failed at %s:%i.\n", __FILE__, __LINE__);\
+        fprintf(stderr, "Expected: \n%s\n", s2);\
+        fprintf(stderr, "Got: \n%s\n", s1);\
+        fprintf(stderr, "----------------\n");\
+        free(s1);\
+        free(s2);\
+        return 1;\
+    }
 
 
 #endif

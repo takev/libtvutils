@@ -30,8 +30,6 @@ tvutils/target.h
 tvutils/endian.h
 tvutils/memory_access.h
 tvutils/number.h
-tvutils/bigint.h
-tvutils/bigint.c
 tvutils/permhashtable.h
 tvutils/atomic_gcc.h
 tvutils/bsearch_test
@@ -41,7 +39,7 @@ tvutils/permhashtable_test
 tvutils/random_test
 tvutils/ringbuffer_test
 tvutils/time_test
-tvutils/bigint_test
+tvutils/varint_test
 tvutils/*.pyc
 pyext/tvutils.py
 pyext/tvutils.pyc
